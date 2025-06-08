@@ -1,0 +1,26 @@
+<view class="container" wx:if="{{groupDetail}}">
+  
+  <swiper class="image-swiper" indicator-dots="{{true}}" autoplay="{{true}}" interval="{{3000}}" duration="{{500}}">
+    <block wx:for="{{imageList}}" wx:key="*this">
+      <swiper-item>
+        <image src="{{item}}" class="slide-image" mode="aspectFill"/>
+      </swiper-item>
+    </block>
+  </swiper>
+
+  <view class="detail-info-card">
+    <view class="product-item" wx:for="{{groupDetail.products}}" wx:for-item="product" wx:key="id">
+      <view class="product-title-line">
+        <text class="product-style-id">款号 {{product.style_id}}</text>
+        <text class="product-price">¥ {{product.price}}</text>
+      </view>
+      <view class="product-name">{{product.name}}</view>
+      <view class="product-desc">{{product.description}}</view>
+    </view>
+  </view>
+
+  <view class="action-bar">
+    <button class="download-btn" bindtap="onDownloadAllImages">一键下载所有图片</button>
+  </view>
+
+</view>

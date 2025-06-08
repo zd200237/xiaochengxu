@@ -1,0 +1,3 @@
+<view class="brand-item" wx:for="{{brandList}}" wx:key="id" bindtap="goToGroupList" data-brandid="{{item.id}}">
+  <text class="brand-name">{{item.name}}</text>
+</view>

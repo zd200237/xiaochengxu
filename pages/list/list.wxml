@@ -1,0 +1,29 @@
+<view class="container">
+  
+  <view class="search-bar">
+    <input 
+      class="search-input" 
+      placeholder="输入款号进行模糊搜索"
+      value="{{searchKeyword}}"
+      bindinput="onSearchInput"
+      bindconfirm="onSearchConfirm"
+    />
+    <view class="clear-btn" wx:if="{{searchKeyword}}" bindtap="onClearSearch">×</view>
+  </view>
+
+  <view class="list-wrapper">
+    <view class="group-item" wx:for="{{groupList}}" wx:key="id" bindtap="goToDetail" data-groupid="{{item.id}}">
+      <image class="cover-image" src="{{item.cover_image}}" mode="widthFix" />
+      <view class="info-area">
+        <view class="product-info" wx:for="{{item.products}}" wx:for-item="product" wx:key="id">
+          <view class="product-line">
+            <text class="style-id">{{product.style_id}}</text>
+            <text class="price">¥ {{product.price}}</text>
+          </view>
+          <view class="product-name">{{product.name}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+</view>

@@ -1,0 +1,18 @@
+/* index.wxss */
+.container {
+  padding: 20rpx;
+}
+
+.brand-item {
+  background-color: #f7f7f7;
+  padding: 30rpx 20rpx;
+  border-radius: 10rpx;
+  margin-bottom: 20rpx;
+  border: 1px solid #eee;
+  font-size: 32rpx;
+  text-align: center;
+}
+
+.brand-name {
+  color: #333;
+}
