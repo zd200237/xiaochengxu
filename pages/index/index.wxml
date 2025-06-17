@@ -1,3 +1,9 @@
-<view class="brand-item" wx:for="{{brandList}}" wx:key="id" bindtap="goToGroupList" data-brandid="{{item.id}}">
-  <text class="brand-name">{{item.name}}</text>
+<view class="container">
+  <view class="brand-grid-container">
+    <view class="brand-item" wx:for="{{brandList}}" wx:key="id" bindtap="goToGroupList" data-brandid="{{item.id}}">
+      <view class="brand-content">
+        <text class="brand-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
 </view>

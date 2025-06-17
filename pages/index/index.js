@@ -28,7 +28,7 @@ Page({
     // 调用微信的网络请求API
     wx.request({
       // 填写我们之前开发好的API地址
-      url: 'http://xiaochengxu.uiijii.cn/api.php?action=getBrands',
+      url: 'https://xiaochengxu.uiijii.cn/api.php?action=getBrands',
       
       // 请求成功时的回调函数
       success: function (res) {

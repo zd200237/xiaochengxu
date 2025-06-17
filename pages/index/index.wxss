@@ -1,18 +1,96 @@
 /* index.wxss */
+
+/* 页面整体内边距，也适当增大 */
 .container {
-  padding: 20rpx;
+  padding: 20rpx; /* 增大页面边距 */
+  box-sizing: border-box;
 }
 
+/* 网格容器样式 */
+.brand-grid-container {
+  display: flex; /* 启用Flexbox布局 */
+  flex-wrap: wrap; /* 允许换行 */
+  width: 100%;
+}
+
+/* 品牌卡片样式 */
 .brand-item {
-  background-color: #f7f7f7;
-  padding: 30rpx 20rpx;
-  border-radius: 10rpx;
-  margin-bottom: 20rpx;
-  border: 1px solid #eee;
-  font-size: 32rpx;
-  text-align: center;
+  /* 核心：计算宽度，实现一行4个 */
+  width: 25%; /* 每个item占据25%的宽度 */
+  box-sizing: border-box; /* 让padding和border不影响总宽度 */
+  
+  /* 增大卡片内部的留白，这会直接拉大卡片间的视觉间距 */
+  padding: 16rpx; 
+
+  /* 固定宽高比，让卡片看起来像个方块 */
+  aspect-ratio: 1 / 1; 
+
+  border: none;
+  margin: 0;
 }
 
+/* 卡片内容区域的样式 */
+.brand-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+  width: 100%;
+  height: 100%;
+  
+  border-radius: 32rpx; /* 圆角更圆润，更像iPhone图标 */
+  
+  /* 默认的背景和边框，会被下面的彩色样式覆盖 */
+  background-color: #f7f7f7;
+  border: 1rpx solid #eee;
+}
+
+/* 品牌名称样式 */
 .brand-name {
-  color: #333;
+  font-size: 26rpx;
+  /* 使用一个更柔和的深色，适配多种背景 */
+  color: #374151; 
+  font-weight: 500;
+}
+
+/* (可选) 增加点击效果 */
+.brand-item:active .brand-content {
+  transform: scale(0.95); /* 点击时缩小效果更明显一点 */
+  transition: transform 0.1s;
+}
+
+/* * 核心：多彩配色方案 
+ * 使用nth-child选择器，为不同的卡片应用不同的颜色
+ * 我们准备了5种颜色循环使用
+*/
+
+/* 1. 柔和蓝 */
+.brand-item:nth-child(5n + 1) .brand-content {
+  background-color: #eef7ff;
+  border-color: #dbeafe;
+}
+
+/* 2. 清新绿 */
+.brand-item:nth-child(5n + 2) .brand-content {
+  background-color: #f0fdf4;
+  border-color: #dcfce7;
+}
+
+/* 3. 活力黄 */
+.brand-item:nth-child(5n + 3) .brand-content {
+  background-color: #fffbeb;
+  border-color: #fef3c7;
+}
+
+/* 4. 温柔粉 */
+.brand-item:nth-child(5n + 4) .brand-content {
+  background-color: #fff1f2;
+  border-color: #ffe4e6;
+}
+
+/* 5. 优雅紫 */
+.brand-item:nth-child(5n + 5) .brand-content {
+  background-color: #f5f3ff;
+  border-color: #e9e3ff;
 }

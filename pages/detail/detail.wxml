@@ -1,4 +1,4 @@
-<view class="container" wx:if="{{groupDetail}}">
+<view class="ok-container" wx:if="{{groupDetail}}">
   
   <swiper class="image-swiper" indicator-dots="{{true}}" autoplay="{{true}}" interval="{{3000}}" duration="{{500}}">
     <block wx:for="{{imageList}}" wx:key="*this">
@@ -20,7 +20,7 @@
   </view>
 
   <view class="action-bar">
-    <button class="download-btn" bindtap="onDownloadAllImages">一键下载所有图片</button>
+    <button class="download-btn" bindtap="onDownloadAllImages">一键下载</button>
   </view>
 
 </view>
