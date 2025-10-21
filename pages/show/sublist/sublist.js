@@ -1,4 +1,4 @@
-// pages/show/sublist.js (更新后)
+// pages/show/sublist.js (最终修正版)
 Page({
   data: {
     seriesList: [], // 原始数据列表
@@ -7,15 +7,26 @@ Page({
     loading: true,
     seasonPath: '' 
   },
+
   onLoad: function (options) {
-    const seasonPath = options.season;
+    const seasonPath = options.season || '';
+
+    // ✅ 去掉前缀数字 + 各类横线（兼容 -, –, —, －, _）
+    const cleanTitle = seasonPath.replace(/^\s*\d+[\s\-–—－_]+/, '').trim();
+
+    // 保存原始路径和清理后的标题
+    this.setData({ seasonPath });
+
+    // ✅ 动态修改导航栏标题为去前缀后的名字
+    wx.setNavigationBarTitle({ title: cleanTitle });
+
+    // 加载子目录数据
     if (seasonPath) {
-      this.setData({ seasonPath: seasonPath });
       this.getSeriesList(seasonPath);
-      wx.setNavigationBarTitle({ title: seasonPath });
     }
   },
-  getSeriesList: function(seasonPath) {
+
+  getSeriesList: function (seasonPath) {
     this.setData({ loading: true });
     wx.request({
       url: `https://xiaochengxu.uiijii.cn/get_show_subfolders.php?season=${seasonPath}`,
@@ -35,11 +46,10 @@ Page({
     });
   },
 
-  // --- 新增：瀑布流分配逻辑 ---
-  distributeToColumns: function(dataList) {
+  // --- 瀑布流分配逻辑 ---
+  distributeToColumns: function (dataList) {
     const leftColumn = [];
     const rightColumn = [];
-    // 简单的交错分配
     dataList.forEach((item, index) => {
       if (index % 2 === 0) {
         leftColumn.push(item);
@@ -53,7 +63,7 @@ Page({
     });
   },
 
-  goToDetail: function(event) {
+  goToDetail: function (event) {
     const seriesPath = event.currentTarget.dataset.path;
     wx.navigateTo({
       url: `/pages/show/detail?season=${this.data.seasonPath}&series=${seriesPath}`
