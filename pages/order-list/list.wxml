@@ -1,0 +1,38 @@
+<!-- pages/order-list/list.wxml (带跳转功能) -->
+<view class="container">
+  <view 
+    wx:for="{{ orderList }}" 
+    wx:key="source" 
+    class="order-card"
+    bind:tap="goToDetail"
+    data-source="{{ item.source }}"
+  >
+    
+    <!-- 顶部：订单号和销售季节 -->
+    <view class="card-header">
+      <text class="order-source">订单号: {{ item.source }}</text>
+      <view wx:if="{{ item.main_sale_season }}" class="sale-season-badge">
+        {{ item.main_sale_season }}
+      </view>
+    </view>
+    
+    <!-- 底部：横排的统计信息 -->
+    <view class="card-footer">
+      <view class="footer-item align-left">
+        <text class="item-label">总数量</text>
+        <text class="item-value">{{ item.total_quantity }}</text>
+      </view>
+      <view class="footer-item align-center">
+        <text class="item-label">总金额</text>
+        <text class="item-value amount">￥{{ item.total_amount }}</text>
+      </view>
+       <view class="footer-item align-right">
+        <text class="item-label">单据日期</text>
+        <text class="item-value date">{{ item.billdate }}</text>
+      </view>
+    </view>
+  </view>
+  
+  <view wx:if="{{ isLoading }}" class="loading-tip">正在加载更多...</view>
+  <view wx:if="{{ noMoreData }}" class="loading-tip">没有更多数据了</view>
+</view>

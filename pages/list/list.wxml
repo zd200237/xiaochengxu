@@ -1,42 +1,67 @@
+<!-- list.wxml (终极UI版) -->
 <view class="list-page-container">
+  <!-- 搜索栏 -->
   <view class="search-bar">
-    <input 
-      class="search-input" 
-      placeholder="输入款号进行模糊搜索"
-      value="{{searchKeyword}}"
-      bindinput="onSearchInput"
-      bindconfirm="onSearchConfirm"
-    />
+    <input class="search-input" placeholder="输入款号进行模糊搜索" value="{{searchKeyword}}" bindinput="onSearchInput" bindconfirm="onSearchConfirm" />
     <view class="clear-btn" wx:if="{{searchKeyword}}" bindtap="onClearSearch">×</view>
   </view>
+
+  <!-- 瀑布流主体 -->
   <view class="list-wrapper">
+    <!-- === 左侧列 === -->
     <view class="waterfall-column">
       <view class="group-item" wx:for="{{leftColumnList}}" wx:key="id" bindtap="goToDetail" data-groupid="{{item.id}}">
-        <image class="cover-image" src="{{item.cover_image}}" mode="widthFix" />
+        <image class="cover-image" src="{{item.cover_image}}" mode="widthFix" lazy-load="true" />
         <view class="info-area">
           <view class="product-info" wx:for="{{item.products}}" wx:for-item="product" wx:key="id">
             <view class="product-line">
               <text class="style-id">{{product.style_id}}</text>
               <text class="price">¥ {{product.price}}</text>
             </view>
-            <view class="product-name">{{product.name}}</view>
+            
+            <!-- !!! 核心修改：将品名和“已定”信息包裹在一起 !!! -->
+            <view class="product-name-line">
+              <text class="product-name">{{product.name}}</text>
+              <view class="ordered-section" wx:if="{{ product.ordered_info.status }}">
+                <text class="ordered-badge">已订</text>
+                <view class="ordered-colors">
+                  <text wx:for="{{ product.ordered_info.colors }}" wx:for-item="colorItem" wx:key="*this" class="color-tag">{{ colorItem }}</text>
+                </view>
+              </view>
+            </view>
+            
           </view>
         </view>
       </view>
     </view>
+
+    <!-- === 右侧列 (同步修改) === -->
     <view class="waterfall-column">
       <view class="group-item" wx:for="{{rightColumnList}}" wx:key="id" bindtap="goToDetail" data-groupid="{{item.id}}">
-        <image class="cover-image" src="{{item.cover_image}}" mode="widthFix" />
+        <image class="cover-image" src="{{item.cover_image}}" mode="widthFix" lazy-load="true" />
         <view class="info-area">
           <view class="product-info" wx:for="{{item.products}}" wx:for-item="product" wx:key="id">
             <view class="product-line">
               <text class="style-id">{{product.style_id}}</text>
               <text class="price">¥ {{product.price}}</text>
             </view>
-            <view class="product-name">{{product.name}}</view>
+            
+            <view class="product-name-line">
+              <text class="product-name">{{product.name}}</text>
+              <view class="ordered-section" wx:if="{{ product.ordered_info.status }}">
+                <text class="ordered-badge">已订</text>
+                <view class="ordered-colors">
+                  <text wx:for="{{ product.ordered_info.colors }}" wx:for-item="colorItem" wx:key="*this" class="color-tag">{{ colorItem }}</text>
+                </view>
+              </view>
+            </view>
+            
           </view>
         </view>
       </view>
     </view>
   </view>
+
+  <view wx:if="{{ isLoading }}" class="loading-tip">正在加载更多...</view>
+  <view wx:if="{{ !isLoading && leftColumnList.length === 0 && rightColumnList.length === 0 }}" class="empty-tip">暂无商品数据</view>
 </view>

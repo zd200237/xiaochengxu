@@ -1,4 +1,7 @@
 // pages/list/list.js
+
+const app = getApp();
+
 Page({
   data: {
     groupList: [],
@@ -8,52 +11,109 @@ Page({
     brandId: null,
     searchKeyword: '',
     leftColumnHeight: 0,
-    rightColumnHeight: 0
+    rightColumnHeight: 0,
+    isLoading: false,
+    isSearching: false // 新增：搜索模式标志
   },
 
   onLoad: function (options) {
     const brandId = options.brand_id;
     this.setData({ brandId: brandId });
     if (brandId) {
-      this.fetchData(`https://xiaochengxu.uiijii.cn/api.php?action=getProductGroups&brand_id=${brandId}`, true);
+      this.fetchProductGroups(`https://xiaochengxu.uiijii.cn/api.php?action=getProductGroups&brand_id=${brandId}`, true);
     }
   },
 
-  fetchData: function(apiUrl, isInitialLoad = false) {
-    const that = this;
-    wx.showLoading({ title: isInitialLoad ? '加载中...' : '搜索中...' });
+  // --- 步骤1：获取商品主数据 ---
+  fetchProductGroups: function(apiUrl, isInitialLoad = false) {
+    this.setData({ isLoading: true });
     wx.request({
       url: apiUrl,
       success: (res) => {
         if (res.statusCode === 200 && Array.isArray(res.data)) {
-          that.setData({ groupList: res.data });
+          const productGroups = res.data;
           if (isInitialLoad) {
-            that.setData({ originalGroupList: res.data });
+            this.setData({ originalGroupList: productGroups });
+            this.fetchOrderInfoAndMerge(productGroups, false); // 刷新、原始数据
+          } else {
+            this.fetchOrderInfoAndMerge(productGroups, this.data.isSearching); // 搜索时带标记
           }
-          // 重新分配瀑布流
-          that.distributeToColumns(res.data);
-          if (!isInitialLoad && res.data.length === 0) {
-            wx.showToast({ title: '没有找到相关商品', icon: 'none' });
-          }
+        } else {
+          this.setData({ isLoading: false });
+          wx.showToast({ title: '加载商品失败', icon: 'error' });
         }
       },
-      fail: () => { wx.showToast({ title: '请求失败', icon: 'error' }); },
-      complete: () => { wx.hideLoading(); }
+      fail: () => {
+        this.setData({ isLoading: false });
+        wx.showToast({ title: '请求商品接口失败', icon: 'error' });
+      }
     });
   },
 
-  // ✨✨✨ 瀑布流分配逻辑 ✨✨✨
+  // --- 步骤2：获取订单信息并合并 ---
+  fetchOrderInfoAndMerge: function(productGroups, isSearch) {
+    const agentInfo = wx.getStorageSync('agent_info');
+    if (!agentInfo || !agentInfo.stockinfo_id) {
+      this.distributeToColumns(productGroups);
+      this.setData({ isLoading: false, isSearching: !!isSearch });
+      return;
+    }
+    let kuanhaoList = [];
+    productGroups.forEach(group => {
+      if (group.products && Array.isArray(group.products)) {
+        group.products.forEach(product => {
+          if (product.style_id) {
+            kuanhaoList.push(product.style_id);
+          }
+        });
+      }
+    });
+    kuanhaoList = [...new Set(kuanhaoList)];
+    if (kuanhaoList.length === 0) {
+      this.distributeToColumns(productGroups);
+      this.setData({ isLoading: false, isSearching: !!isSearch });
+      return;
+    }
+    wx.request({
+      url: 'https://bojun.uiijii.cn/api/get_order_status_by_kuanhao.php',
+      method: 'POST',
+      header: { 'Authorization': 'Bearer ' + wx.getStorageSync('token') },
+      data: {
+        stockinfo_id: agentInfo.stockinfo_id,
+        kuanhao_list: kuanhaoList
+      },
+      success: (res) => {
+        if (res.statusCode === 200 && typeof res.data === 'object') {
+          const orderedMap = res.data;
+          productGroups.forEach(group => {
+            if (group.products && Array.isArray(group.products)) {
+              group.products.forEach(product => {
+                product.ordered_info = orderedMap[product.style_id] || { status: false, colors: [] };
+              });
+            }
+          });
+          this.distributeToColumns(productGroups);
+        } else {
+          this.distributeToColumns(productGroups);
+        }
+      },
+      fail: (err) => {
+        this.distributeToColumns(productGroups);
+      },
+      complete: () => {
+        this.setData({ isLoading: false, isSearching: !!isSearch });
+      }
+    });
+  },
+
+  // --- 瀑布流分列 ---
   distributeToColumns: function(dataList) {
     const leftColumn = [];
     const rightColumn = [];
     let leftHeight = 0;
     let rightHeight = 0;
-
-    dataList.forEach((item, index) => {
-      // 计算每个item的预估高度
+    dataList.forEach((item) => {
       const estimatedHeight = this.calculateItemHeight(item);
-      
-      // 将item放到高度较小的列中
       if (leftHeight <= rightHeight) {
         leftColumn.push(item);
         leftHeight += estimatedHeight;
@@ -62,7 +122,6 @@ Page({
         rightHeight += estimatedHeight;
       }
     });
-
     this.setData({
       leftColumnList: leftColumn,
       rightColumnList: rightColumn,
@@ -71,51 +130,50 @@ Page({
     });
   },
 
-  // ✨✨✨ 预估item高度的辅助函数 ✨✨✨
   calculateItemHeight: function(item) {
-    // 基础高度：图片区域 + padding
-    let baseHeight = 200; // 预估图片高度
-    
-    // 根据商品数量计算info区域高度
-    if (item.products && item.products.length > 0) {
-      // 每个product大约占用60rpx高度
-      baseHeight += item.products.length * 60;
+    let baseHeight = 250;
+    if (item.products && Array.isArray(item.products)) {
+      baseHeight += item.products.length * 70;
+      if (item.products[0] && item.products[0].ordered_info && item.products[0].ordered_info.status) {
+        baseHeight += 40;
+      }
     }
-    
-    // 根据商品名称长度微调（长名称可能换行）
-    if (item.products) {
-      item.products.forEach(product => {
-        if (product.name && product.name.length > 10) {
-          baseHeight += 20; // 长名称可能多占一行
-        }
-      });
-    }
-    
     return baseHeight;
   },
 
-  onSearchInput: function(e) { 
-    this.setData({ searchKeyword: e.detail.value }); 
+  // --- 搜索相关 ---
+  onSearchInput: function(e) {
+    this.setData({ searchKeyword: e.detail.value });
   },
 
   onSearchConfirm: function() {
     const keyword = this.data.searchKeyword.trim();
-    if (!keyword) { 
-      this.onClearSearch(); 
-      return; 
+    if (!keyword) {
+      this.onClearSearch();
+      return;
     }
+    this.setData({ isSearching: true }); // 标记处于搜索态
     const apiUrl = `https://xiaochengxu.uiijii.cn/api.php?action=search&brand_id=${this.data.brandId}&keyword=${keyword}`;
-    this.fetchData(apiUrl);
+    this.fetchProductGroups(apiUrl, false); // 搜索态
   },
 
   onClearSearch: function() {
-    this.setData({ searchKeyword: '' });
-    // 恢复原始数据并重新分配瀑布流
+    this.setData({ searchKeyword: '', isSearching: false });
     this.distributeToColumns(this.data.originalGroupList);
   },
 
+  // --- 详情页跳转 ---
   goToDetail: function (event) {
     const groupId = event.currentTarget.dataset.groupid;
     wx.navigateTo({ url: '/pages/detail/detail?group_id=' + groupId });
+  },
+
+  // --- 下拉刷新 ---
+  onPullDownRefresh: function() {
+    this.setData({ isSearching: false, searchKeyword: '' }); // 下拉刷新优先生效，清掉搜索态
+    if (this.data.brandId) {
+      this.fetchProductGroups(`https://xiaochengxu.uiijii.cn/api.php?action=getProductGroups&brand_id=${this.data.brandId}`, true);
+    }
+    wx.stopPullDownRefresh();
   }
-})
+});

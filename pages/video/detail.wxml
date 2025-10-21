@@ -1,0 +1,36 @@
+<view class="page-container">
+  
+  <view class="search-container">
+    <icon class="search-icon" type="search" size="16"></icon>
+    <input class="search-input" placeholder="搜索视频" bindinput="onSearchInput" />
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-tip">加载中...</view>
+  <block wx:else>
+    <view wx:if="{{videoList.length > 0}}" class="waterfall-container">
+      <view class="column">
+        <view class="video-card" wx:for="{{leftColumnList}}" wx:key="id" bindtap="playVideo" data-item="{{item}}">
+          <view class="media-container">
+            <image class="thumbnail" src="{{item.cover}}" mode="widthFix" />
+            <image class="play-icon" src="/assets/icons/play.png" />
+          </view>
+          <view class="title-container">
+            <text class="video-title">{{item.title}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="column">
+        <view class="video-card" wx:for="{{rightColumnList}}" wx:key="id" bindtap="playVideo" data-item="{{item}}">
+          <view class="media-container">
+            <image class="thumbnail" src="{{item.cover}}" mode="widthFix" />
+            <image class="play-icon" src="/assets/icons/play.png" />
+          </view>
+          <view class="title-container">
+            <text class="video-title">{{item.title}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view wx:else class="empty-tip">该季节下暂无视频</view>
+  </block>
+</view>

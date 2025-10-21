@@ -1,0 +1,72 @@
+page {
+  background: #f3f3f7;
+}
+
+.container {
+  width: 100vw;
+  max-width: 750rpx;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 悬浮卡片，中间偏窄，圆角，边线现代简洁 */
+.order-card {
+  width: 92vw;
+  max-width: 660rpx;
+  margin: 32rpx auto 0 auto;
+  background: #fff;
+  border-radius: 20rpx;
+  border: 2rpx solid #d4d4d4;
+  box-shadow: 0 8rpx 22rpx rgba(35,60,120,0.07);
+  padding: 22rpx 28rpx 18rpx 28rpx;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* 顶部一行：日期（大蓝色）+单号（灰色右对齐） */
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+.order-date {
+  color: #1768d2;
+  font-size: 40rpx;
+  font-weight: bold;
+}
+.order-source {
+  color: #999;
+  font-size: 26rpx;
+  word-break: break-all;
+  padding-left: 20rpx;
+  text-align: right;
+}
+
+/* 底部横排：数量和金额并列（左数量右金额） */
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8rpx;
+}
+.order-quantity, .order-amount {
+  font-size: 31rpx;
+  color: #222;
+}
+.num { font-weight: bold; }
+.amount {
+  font-weight: bold;
+  color: #fa5151;
+  letter-spacing: 1rpx;
+  font-size: 34rpx;
+}
+
+/* 加载/无数据*/
+.loading-tip {
+  text-align: center;
+  padding: 38rpx 0 0 0;
+  color: #999;
+  font-size: 27rpx;
+}

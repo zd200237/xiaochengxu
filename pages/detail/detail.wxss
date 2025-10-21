@@ -1,85 +1,206 @@
-/* pages/detail/detail.wxss */
-
-/* 使用您自定义的 class 来添加滚动所需的底部内边距 */
-.ok-container {
-  padding-bottom: 140rpx;
+/* 页面整体背景 */
+.page-container {
+  background-color: #f7f8fa;
+  min-height: 100vh;
+  padding-bottom: 40rpx;
 }
 
-.image-swiper {
-  width: 100%;
-  height: 900rpx; 
+.detail-content {
+  overflow: hidden;
 }
 
-.slide-image {
+/* 加载提示 */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  color: #999;
+}
+
+/* 垂直轮播图样式 */
+.vertical-swiper {
+  width: 100vw;
+  height: 85vh;
+}
+.swiper-image {
   width: 100%;
   height: 100%;
 }
 
-.detail-info-card { 
-  margin: 20rpx; 
-  padding: 10rpx 30rpx; 
-  background-color: #ffffff; 
-  border-radius: 16rpx; 
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05); 
+/* 下载按钮容器和样式 */
+.download-button-container {
+  padding: 24rpx;
+  margin-top: 3rpx;
+  position: relative;
+  z-index: 10;
+}
+.download-button {
+  background: linear-gradient(90deg, #333 0%, #555 100%);
+  color: white;
+  font-weight: bold;
+  border-radius: 18rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0,0,0,0.2);
+  border: none;
+}
+.download-button::after {
+  border: none;
 }
 
-.product-item { 
-  padding: 30rpx 0; 
-  border-bottom: 1px solid #f0f2f5; 
+/* --- 系列详情的商品列表样式 --- */
+.product-list-container {
+  background-color: #ffffff;
+  margin: 24rpx;
+  border-radius: 16rpx;
+  padding: 16rpx 28rpx;
+  box-shadow: 0 4rpx 24rpx rgba(0,0,0,0.05);
 }
 
-.product-item:last-child { 
-  border-bottom: none; 
+.product-list-item {
+  display: flex;
+  flex-direction: column;
+  padding: 28rpx 0;
+  border-bottom: 1px solid #f2f2f2;
 }
 
-.product-title-line { 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-  margin-bottom: 12rpx; 
+.product-list-item:last-child {
+  border-bottom: none;
 }
 
-.product-style-id { 
-  font-size: 32rpx; 
-  font-weight: bold; 
-  color: #333; 
+/* 顶部区域: 品名和价格 */
+.item-top-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: 20rpx;
 }
 
-.product-price { 
-  font-size: 36rpx; 
-  font-weight: bold; 
-  color: #e64340; 
+/* 左侧: 品名和款号 */
+.item-name-section {
+  display: flex;
+  flex-direction: column;
+  padding-right: 20rpx;
 }
 
-.product-name { 
-  font-size: 28rpx; 
-  color: #666; 
-  margin-bottom: 10rpx; 
+.item-name {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 8rpx;
 }
 
-.product-desc { 
-  font-size: 26rpx; 
-  color: #999; 
-  line-height: 1.5; 
+.item-style-id {
+  font-size: 24rpx;
+  color: #222;
 }
 
-.action-bar { 
-  position: fixed; 
-  bottom: 0; 
-  left: 0; 
-  width: 100%; 
-  background-color: #ffffff; 
-  padding: 20rpx; 
-  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05); 
-  box-sizing: border-box; 
-  /* 适配 iPhone X 等全面屏手机的底部安全区域 */
-  padding-bottom: env(safe-area-inset-bottom); 
+/* 价格样式 */
+.item-price {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #e53935;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
-.download-btn { 
-  background-color: #07c160; 
-  color: white; 
-  border-radius: 50rpx; 
-  font-size: 32rpx; 
-  font-weight: bold; 
+/* 底部区域: FAB描述和复制按钮 */
+.item-fab-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* FAB 描述文本 */
+.item-fab-value {
+  font-size: 24rpx;
+  color: #666;
+  line-height: 1.5;
+  word-break: break-all;
+  flex: 1;
+  padding-right: 20rpx;
+}
+
+/* "复制"按钮样式 (现在是view) */
+.item-fab-copy-btn {
+  font-size: 22rpx;
+  padding: 4rpx 10rpx; /* !!! 进一步减小了左右边距 !!! */
+  line-height: 1.4; /* 稍微调紧行高 */
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 8rpx;
+  flex-shrink: 0;
+}
+
+/* --- 单品详情的信息卡片样式 (样式复用，保持不变) --- */
+.info-card {
+  background-color: #ffffff;
+  margin: 24rpx;
+  border-radius: 16rpx;
+  padding: 32rpx;
+  box-shadow: 0 4rpx 24rpx rgba(0,0,0,0.05);
+}
+.price-line {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 16rpx;
+}
+.price-symbol {
+  font-size: 28rpx;
+  color: #e53935;
+}
+.price-value {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #e53935;
+  margin-left: 4rpx;
+}
+.name-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.product-name {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+}
+.style-id {
+  font-size: 24rpx;
+  color: #222;
+  margin-left: 16rpx;
+}
+
+/* --- FAB一键复制样式 (单品详情用，保持不变) --- */
+.fab-box {
+  display: flex;
+  align-items: center;
+  margin-left: 16rpx;
+  margin-top: 4rpx;
+  margin-bottom: 4rpx;
+}
+.fab-label {
+  font-size: 24rpx;
+  color: #888;
+  margin-right: 6rpx;
+}
+.fab-value {
+  font-size: 24rpx;
+  color: #222;
+  margin-right: 10rpx;
+}
+/* 注意: 这个 fab-copy-btn 是单品页的样式，我们不动它 */
+.fab-copy-btn {
+  font-size: 22rpx;
+  padding: 0 16rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+}
+
+.description {
+  margin-top: 16rpx;
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
 }

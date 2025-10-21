@@ -1,26 +1,82 @@
-<view class="ok-container" wx:if="{{groupDetail}}">
+<view class="page-container">
   
-  <swiper class="image-swiper" indicator-dots="{{true}}" autoplay="{{true}}" interval="{{3000}}" duration="{{500}}">
-    <block wx:for="{{imageList}}" wx:key="*this">
-      <swiper-item>
-        <image src="{{item}}" class="slide-image" mode="aspectFill"/>
-      </swiper-item>
-    </block>
-  </swiper>
+  <view wx:if="{{!groupDetail && !productDetail}}" class="loading-container">
+    <text class="loading-text">加载中...</text>
+  </view>
 
-  <view class="detail-info-card">
-    <view class="product-item" wx:for="{{groupDetail.products}}" wx:for-item="product" wx:key="id">
-      <view class="product-title-line">
-        <text class="product-style-id">款号 {{product.style_id}}</text>
-        <text class="product-price">¥ {{product.price}}</text>
+  <view wx:if="{{productDetail}}" class="detail-content">
+    <swiper class="vertical-swiper" indicator-dots vertical="true" autoplay circular>
+      <block wx:for="{{imageList}}" wx:key="*this">
+        <swiper-item>
+          <image 
+            src="{{item}}" 
+            class="swiper-image" 
+            mode="aspectFill"
+            bindtap="onImageLongPress"
+            data-src="{{item}}"
+          />
+        </swiper-item>
+      </block>
+    </swiper>
+    
+    <view class="download-button-container">
+      <button class="download-button" bindtap="onDownloadAllImages">保存全部图片</button>
+    </view>
+    
+    <view class="info-card">
+      <view class="price-line">
+        <text class="price-symbol">￥</text>
+        <text class="price-value">{{productDetail.price}}</text>
       </view>
-      <view class="product-name">{{product.name}}</view>
-      <view class="product-desc">{{product.description}}</view>
+      <view class="name-line">
+        <text class="product-name">{{productDetail.name}}</text>
+        <text class="style-id">款号: {{productDetail.style_id}}</text>
+      </view>
+      <view class="fab-box" wx:if="{{productDetail.fab}}">
+        <text class="fab-label">FAB</text>
+        <text class="fab-value">{{productDetail.fab}}</text>
+        <button class="fab-copy-btn" data-fab="{{productDetail.fab}}" bindtap="onCopyFab">复制</button>
+      </view>
+      <text class="description">{{productDetail.description}}</text>
     </view>
   </view>
 
-  <view class="action-bar">
-    <button class="download-btn" bindtap="onDownloadAllImages">一键下载</button>
-  </view>
+  <view wx:elif="{{groupDetail}}" class="detail-content">
+    <swiper class="vertical-swiper" indicator-dots vertical="true" autoplay circular>
+      <block wx:for="{{imageList}}" wx:key="*this">
+        <swiper-item>
+          <image 
+            src="{{item}}" 
+            class="swiper-image" 
+            mode="aspectFill"
+            bindtap="onImageLongPress"
+            data-src="{{item}}"
+          />
+        </swiper-item>
+      </block>
+    </swiper>
 
+    <view class="download-button-container">
+      <button class="download-button" bindtap="onDownloadAllImages">保存全部图片</button>
+    </view>
+
+    <view class="product-list-container">
+      <block wx:for="{{groupDetail.products}}" wx:key="id">
+        <view class="product-list-item">
+          <view class="item-top-section">
+            <view class="item-name-section">
+              <text class="item-name">{{item.name}}</text>
+              <text class="item-style-id">{{item.style_id}}</text>
+            </view>
+            <text class="item-price">￥{{item.price}}</text>
+          </view>
+    
+          <view class="item-fab-section" wx:if="{{item.fab}}">
+            <text class="item-fab-value">{{item.fab}}</text>
+            <view class="item-fab-copy-btn" data-fab="{{item.fab}}" bindtap="onCopyFab">复制</view>
+          </view>
+        </view>
+      </block>
+    </view>
+    </view>
 </view>

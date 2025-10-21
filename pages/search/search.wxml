@@ -1,0 +1,56 @@
+<!-- 文件路径: /pages/search/search.wxml -->
+<view class="page-container">
+  
+  <!-- 1. 加载中的提示 -->
+  <view wx:if="{{loading}}" class="status-tip">
+    <text>正在努力搜索...</text>
+  </view>
+  
+  <!-- 2. 加载完成后的内容 -->
+  <block wx:else>
+    <!-- 2.1 搜索结果提示 -->
+    <view class="header-info">
+      <text>找到与“{{keyword}}”相关的结果 {{groupList.length}} 条</text>
+    </view>
+
+    <!-- 2.2 有结果时，显示瀑布流 -->
+    <view wx:if="{{groupList.length > 0}}" class="waterfall-container">
+      <!-- 左边列 -->
+      <view class="column">
+        <view class="group-item" wx:for="{{leftColumnList}}" wx:key="id" bindtap="goToDetail" data-groupid="{{item.id}}">
+          <image class="cover-image" src="{{item.cover_image}}" mode="widthFix" />
+          <view class="info-area">
+            <view class="product-info" wx:for="{{item.products}}" wx:for-item="product" wx:key="id">
+              <view class="product-line">
+                <text class="style-id">{{product.style_id}}</text>
+                <text class="price">¥{{product.price}}</text>
+              </view>
+              <text class="product-name">{{product.name}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <!-- 右边列 -->
+      <view class="column">
+        <view class="group-item" wx:for="{{rightColumnList}}" wx:key="id" bindtap="goToDetail" data-groupid="{{item.id}}">
+          <image class="cover-image" src="{{item.cover_image}}" mode="widthFix" />
+          <view class="info-area">
+            <view class="product-info" wx:for="{{item.products}}" wx:for-item="product" wx:key="id">
+              <view class="product-line">
+                <text class="style-id">{{product.style_id}}</text>
+                <text class="price">¥{{product.price}}</text>
+              </view>
+              <text class="product-name">{{product.name}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 2.3 无结果时，显示提示 -->
+    <view wx:else class="status-tip">
+      <text>未能找到相关内容</text>
+      <text class="sub-tip">请尝试更换关键字</text>
+    </view>
+  </block>
+</view>

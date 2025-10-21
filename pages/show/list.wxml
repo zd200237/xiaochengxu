@@ -1,0 +1,29 @@
+<!-- pages/show/list.wxml (修正后) -->
+<view class="page-container">
+  <view wx:if="{{loading}}" class="loading-tip">加载中...</view>
+  
+  <block wx:else>
+    <view wx:if="{{showList.length > 0}}" class="list-grid">
+      <!-- 循环渲染每个系列卡片 -->
+      <view 
+        wx:for="{{showList}}" 
+        wx:key="path" 
+        class="list-card"
+        bindtap="goToSubList" 
+        data-item="{{item}}" 
+      >
+        <!-- 右上角状态指示灯 -->
+        <view class="status-dot {{item.hasContent ? 'active' : ''}}"></view>
+
+        <!-- 卡片文字内容 -->
+        <view class="card-content">
+          <text class="card-name">{{item.name}}</text>
+          <text class="card-count">款数: {{item.subfolder_count}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 无内容提示 -->
+    <view wx:else class="empty-tip">暂无内容</view>
+  </block>
+</view>

@@ -1,0 +1,16 @@
+<view class="container">
+  <view wx:for="{{ orderList }}" wx:key="source" class="order-card" bind:tap="goToDetail" data-source="{{ item.source }}">
+    <!-- 横向一行：日期 + 单号 -->
+    <view class="card-top">
+      <text class="order-date">{{ item.ck_time }}</text>
+      <text class="order-source">{{ item.source }}</text>
+    </view>
+    <!-- 数量和金额一横排分布 -->
+    <view class="card-bottom">
+      <text class="order-quantity">数量：<text class="num">{{ item.total_num }}件</text></text>
+      <text class="order-amount">金额：<text class="amount">￥{{ item.total_amount }}</text></text>
+    </view>
+  </view>
+  <view wx:if="{{ isLoading }}" class="loading-tip">正在加载更多...</view>
+  <view wx:if="{{ noMoreData }}" class="loading-tip">没有更多数据了</view>
+</view>

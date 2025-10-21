@@ -1,0 +1,91 @@
+/* pages/video/detail/detail.wxss (V4 - 播放按钮移至右下角) */
+.page-container {
+  padding: 16rpx;
+  background-color: #f4f4f4;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 30rpx;
+  padding: 10rpx 24rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.06);
+}
+
+.search-icon {
+  margin-right: 16rpx;
+}
+
+.search-input {
+  flex: 1;
+  font-size: 28rpx;
+}
+
+.loading-tip, .empty-tip {
+  text-align: center;
+  color: #999;
+  padding-top: 200rpx;
+}
+
+.waterfall-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.column {
+  width: calc(50% - 8rpx);
+}
+
+.video-card {
+  width: 100%;
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.08);
+  transition: transform 0.2s;
+}
+
+.video-card:active {
+  transform: scale(0.97);
+}
+
+.media-container {
+  position: relative;
+}
+
+.thumbnail {
+  width: 100%;
+  display: block;
+}
+
+/* !!! 核心修改：修改播放按钮样式，使其定位在右下角 !!! */
+.play-icon {
+  position: absolute;
+  right: 16rpx;
+  bottom: 16rpx;
+  /* 移除 transform 居中样式 */
+  width: 50rpx; /* 尺寸改回小一点 */
+  height: 50rpx;
+  opacity: 0.9;
+  pointer-events: none;
+  filter: drop-shadow(0 0 8rpx rgba(0, 0, 0, 0.5));
+}
+
+.title-container {
+  padding: 16rpx;
+}
+
+.video-title {
+  font-size: 26rpx;
+  color: #333;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+}

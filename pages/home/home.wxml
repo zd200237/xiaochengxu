@@ -1,0 +1,31 @@
+<view class="page-bg">
+  <view class="home-header">
+    <text class="welcome">欢迎您，</text>
+    <text class="agent-name">{{ agentInfo.stockinfo_name }}</text>
+  </view>
+
+  <view class="home-card-panel">
+    <view class="home-menu-grid">
+      <view class="home-menu-card" bind:tap="goToPage" data-url="/pages/order-list/list">
+        <image class="menu-icon" src="/assets/icons/order.png" mode="aspectFit"></image>
+        <text class="menu-title">订单</text>
+      </view>
+      <view class="home-menu-card" bind:tap="goToPage" data-url="/pages/outbound-list/list">
+        <image class="menu-icon" src="/assets/icons/outbound.png" mode="aspectFit"></image>
+        <text class="menu-title">进货单</text>
+      </view>
+      <view class="home-menu-card" bind:tap="goToPage" data-url="/pages/refund-list/list">
+        <image class="menu-icon" src="/assets/icons/refund.png" mode="aspectFit"></image>
+        <text class="menu-title">退货单</text>
+      </view>
+      <view class="home-menu-card" bind:tap="goToPage" data-url="/pages/account-balance/balance">
+        <image class="menu-icon" src="/assets/icons/balance.png" mode="aspectFit"></image>
+        <text class="menu-title">资金账户</text>
+      </view>
+      <view class="home-menu-card" bind:tap="goToPage" data-url="/pages/reconciliation-list/list">
+        <image class="menu-icon" src="/assets/icons/statement.png" mode="aspectFit"></image>
+        <text class="menu-title">月度对账单</text>
+      </view>
+    </view>
+  </view>
+</view>

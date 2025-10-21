@@ -1,0 +1,100 @@
+page { 
+  background-color: #f7f8fa; 
+}
+.container { 
+  padding: 0;   /* 不要左右内边距，主卡/明细卡自己决定内边距 */ 
+}
+
+/* 主信息卡片——居中且圆角阴影 */
+.summary-card {
+  width: 94vw;
+  margin: 40rpx auto 30rpx auto;
+  background-color: #fff;
+  border-radius: 16rpx;
+  box-shadow: 0 6rpx 36rpx rgba(31,39,80,0.05);
+  padding: 36rpx 30rpx 30rpx 30rpx;
+}
+.info-row { 
+  display: flex; 
+  justify-content: space-between; 
+  font-size: 28rpx; 
+  margin-bottom: 20rpx; 
+}
+.info-row:last-child { margin-bottom: 0; }
+.label { color: #666; }
+.value { color: #333; }
+.value.bold { font-weight: bold; }
+.value.amount { color: #fa5151; }
+
+/* 订单总金额高亮 */
+.amount { color: #ff2d4b; font-weight: bold; font-size: 32rpx; }
+
+.detail-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin: 30rpx 0 20rpx 12rpx;
+  padding-left: 10rpx;
+  color: #222;
+}
+
+/* 通栏商品卡片 */
+.kuanhao-card {
+  background-color: #fff;
+  width: 90vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  margin-bottom: 18rpx;
+  border-radius: 0; /* 明细卡为通栏 */
+  padding: 30rpx 36rpx 10rpx 36rpx;
+  box-sizing: border-box;
+  box-shadow: 0 4rpx 24rpx rgba(31,39,80,0.03);
+}
+
+/* 卡头——款号等横排 */
+.kuanhao-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 18rpx;
+  border-bottom: 1px solid #f2f2f2;
+}
+.kuanhao-info {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  flex: 1;
+  padding-right: 20rpx;
+  overflow: hidden;
+}
+.kuanhao-text {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #222;
+  margin-right: 12rpx;
+}
+.product-name-text {
+  font-size: 26rpx;
+  color: rgb(10, 10, 10);
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 48vw; /* 品名很长时防止溢出 */
+}
+.kuanhao-total {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+/* 颜色明细部分 */
+.colors-list { padding-top: 12rpx; }
+.color-row {
+  display: flex;
+  align-items: center;
+  padding: 18rpx 0 12rpx 0;
+  font-size: 28rpx;
+}
+.color-name { width: 180rpx; color: #555; }
+.color-qty { width: 120rpx; color: #222; text-align: center; }
+.color-amount { flex: 1; color: #222; text-align: right; font-weight: 600; }

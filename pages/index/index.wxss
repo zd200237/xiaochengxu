@@ -1,96 +1,220 @@
-/* index.wxss */
-
-/* 页面整体内边距，也适当增大 */
-.container {
-  padding: 20rpx; /* 增大页面边距 */
+.page-container {
+  position: relative;
+  min-height: 100vh;
   box-sizing: border-box;
-}
-
-/* 网格容器样式 */
-.brand-grid-container {
-  display: flex; /* 启用Flexbox布局 */
-  flex-wrap: wrap; /* 允许换行 */
-  width: 100%;
-}
-
-/* 品牌卡片样式 */
-.brand-item {
-  /* 核心：计算宽度，实现一行4个 */
-  width: 25%; /* 每个item占据25%的宽度 */
-  box-sizing: border-box; /* 让padding和border不影响总宽度 */
-  
-  /* 增大卡片内部的留白，这会直接拉大卡片间的视觉间距 */
-  padding: 16rpx; 
-
-  /* 固定宽高比，让卡片看起来像个方块 */
-  aspect-ratio: 1 / 1; 
-
-  border: none;
-  margin: 0;
-}
-
-/* 卡片内容区域的样式 */
-.brand-content {
+  padding: 28rpx;
+  background: linear-gradient(to bottom, #f3fbfe 0%, #ffffff 100%);
   display: flex;
   flex-direction: column;
+}
+
+/* 彩色顶部导航栏（原样保留） */
+.colorful-nav-bar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 44rpx;
+  position: relative;
+}
+
+.nav-card {
+  width: 30%;
+  height: 92rpx;
+  border-radius: 34rpx;
+  display: flex;
   justify-content: center;
   align-items: center;
-  
-  width: 100%;
-  height: 100%;
-  
-  border-radius: 32rpx; /* 圆角更圆润，更像iPhone图标 */
-  
-  /* 默认的背景和边框，会被下面的彩色样式覆盖 */
-  background-color: #f7f7f7;
-  border: 1rpx solid #eee;
+  color: white;
+  box-shadow: 0 12rpx 36rpx rgba(50, 100, 180, 0.18);
+  font-weight: 600;
+  position: relative;
+  transition: transform 0.18s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.2s;
+  letter-spacing: 2rpx;
 }
+.nav-card:active {
+  transform: scale(0.94);
+  box-shadow: 0 4rpx 12rpx rgba(50, 100, 180, 0.16);
+}
+.nav-text {
+  font-size: 32rpx;
+}
+.nav-card-outfit { background: linear-gradient(45deg, #2CD8D5 0%, #6B8DD6 100%);}
+.nav-card-buyershow { background: linear-gradient(45deg, #A984E3 0%, #6B8DD6 100%);}
+.nav-card-video { background: linear-gradient(45deg, #F97794 0%, #623AA2 100%);}
+.nav-slider {
+  position: absolute;
+  bottom: 12rpx;
+  width: 56rpx;
+  height: 8rpx;
+  background: linear-gradient(90deg, #7fd8f8, #f6d365 80%);
+  border-radius: 4rpx;
+  transition: left 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  box-shadow: 0 0 14rpx 2rpx #f6d3653c;
+}
+.nav-slider.active-outfit { left: 16.66%; transform: translateX(-50%);}
+.nav-slider.active-buyershow { left: 50%; transform: translateX(-50%);}
+.nav-slider.active-video { left: 83.33%; transform: translateX(-50%);}
 
-/* 品牌名称样式 */
-.brand-name {
-  font-size: 26rpx;
-  /* 使用一个更柔和的深色，适配多种背景 */
-  color: #374151; 
+/* 内容区域自动撑开 */
+.content-area {
+  flex: 1 0 auto;
+  padding-top: 14rpx;
+}
+.global-search-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 42rpx;
+}
+.search-input {
+  flex: 2;
+  height: 82rpx;
+  background: rgba(255,255,255,0.88);
+  border-radius: 18rpx;
+  padding: 0 26rpx;
+  font-size: 30rpx;
+  border: 1.5px solid #e4eafe;
+  box-shadow: 0 4rpx 12rpx rgba(120,170,255,0.04);
+}
+.search-button {
+  flex: 1;
+  height: 82rpx;
+  margin-left: 20rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(90deg, #2af598 0%, #009efd 100%);
+  color: white;
+  font-size: 32rpx;
+  border-radius: 18rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0, 158, 253, 0.18);
+  transition: all 0.18s cubic-bezier(.76,.01,.45,.98);
   font-weight: 500;
 }
-
-/* (可选) 增加点击效果 */
-.brand-item:active .brand-content {
-  transform: scale(0.95); /* 点击时缩小效果更明显一点 */
-  transition: transform 0.1s;
+.search-button:active {
+  transform: scale(0.96);
+  box-shadow: 0 4rpx 11rpx rgba(0, 158, 253, 0.25);
 }
 
-/* * 核心：多彩配色方案 
- * 使用nth-child选择器，为不同的卡片应用不同的颜色
- * 我们准备了5种颜色循环使用
-*/
-
-/* 1. 柔和蓝 */
-.brand-item:nth-child(5n + 1) .brand-content {
-  background-color: #eef7ff;
-  border-color: #dbeafe;
+.brand-grid,
+.buyershow-grid,
+.video-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12rpx 0;
 }
 
-/* 2. 清新绿 */
-.brand-item:nth-child(5n + 2) .brand-content {
-  background-color: #f0fdf4;
-  border-color: #dcfce7;
+.glass-card {
+  width: calc(50% - 12rpx);
+  height: 146rpx;
+  border-radius: 28rpx;
+  background: linear-gradient(135deg, rgba(245,247,250,0.98) 80%, rgba(224,235,255,0.85) 100%);
+  box-shadow: 0 8rpx 28rpx 0 rgba(100,140,220,0.09),
+              0 2rpx 9rpx 0 rgba(96,180,250,0.07);
+  margin-bottom: 10rpx;
+  position: relative;
+  border: 1.5rpx solid rgba(80,140,240,0.11);
+  overflow: hidden;
+  backdrop-filter: blur(7rpx);
+  transition: box-shadow 0.18s, transform 0.12s;
+}
+.glass-card:active {
+  box-shadow: 0 3rpx 14rpx #66aaff24;
+  transform: scale(0.985);
+}
+.status-dot {
+  width: 18rpx;
+  height: 18rpx;
+  border-radius: 50%;
+  background: linear-gradient(90deg,#dadfe6 30%,#e7edfa 100%);
+  position: absolute;
+  top: 24rpx;
+  right: 24rpx;
+  box-shadow: 0 0 8rpx #f2f7fb;
+  border: 1rpx solid #e0ecfd;
+  transition: background .22s cubic-bezier(.7,0,.5,1);
+}
+.status-dot.active {
+  background: linear-gradient(90deg,#5ee884 40%,#42c9ec 100%);
+  box-shadow: 0 0 14rpx 5rpx #eafee7;
+  border: 1rpx solid #5ee884;
+}
+.card-content {
+  position: absolute;
+  top: 50%;
+  left: 30rpx;
+  transform: translateY(-50%);
+  width: 80%;
+}
+.brand-name,
+.buyershow-name,
+.video-season-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #263554;
+  letter-spacing: 2rpx;
+  text-shadow: 0 1.5rpx 3rpx #e6eefa66;
+  line-height: 40rpx;
+}
+.loading-tip {
+  text-align: center;
+  color: #adb3c7;
+  padding-top: 200rpx;
+  font-size: 28rpx;
 }
 
-/* 3. 活力黄 */
-.brand-item:nth-child(5n + 3) .brand-content {
-  background-color: #fffbeb;
-  border-color: #fef3c7;
+/* --- 视频号入口网格 --- */
+.channels-grid {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10rpx;
+}
+.channels-logo {
+  position: absolute;
+  right: 18rpx;
+  top: 23%;
+  transform: translateY(-50%);
+  width: 40rpx;
+  height: 40rpx;
+  opacity: 1;
 }
 
-/* 4. 温柔粉 */
-.brand-item:nth-child(5n + 4) .brand-content {
-  background-color: #fff1f2;
-  border-color: #ffe4e6;
+/* --- 个人中心悬浮按钮 --- */
+.personal-center-fab {
+  position: fixed;
+  right: 40rpx;
+  bottom: 90rpx;
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #6B8DD6 0%, #89f7fe 100%);
+  box-shadow: 0 12rpx 36rpx rgba(80, 130, 240, 0.22);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  border: 1.5rpx solid rgba(255, 255, 255, 0.5);
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.personal-center-fab:active {
+  transform: scale(0.95) rotate(10deg);
+  box-shadow: 0 6rpx 20rpx rgba(80, 130, 240, 0.25);
+}
+.fab-icon {
+  width: 64rpx;
+  height: 64rpx;
 }
 
-/* 5. 优雅紫 */
-.brand-item:nth-child(5n + 5) .brand-content {
-  background-color: #f5f3ff;
-  border-color: #e9e3ff;
+/* 底部“到底了”始终吸底 */
+.footer-tip-abs {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  color: #cfd2df;
+  font-size: 24rpx;
+  background: transparent;
+  padding-bottom: 90rpx;  /* 防止被悬浮按钮遮住，可调整 */
+  z-index: 999;
 }

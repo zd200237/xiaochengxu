@@ -1,77 +1,210 @@
-// pages/index/index.js
+const app = getApp();
 
 Page({
-  /**
-   * 页面的初始数据
-   * 用于存放所有需要被WXML页面使用的数据
-   */
   data: {
-    brandList: [] // 用于存放从API获取的品牌列表，初始为空数组
+    activeTab: 'outfit',
+    brandList: [],
+    buyerShowList: [],
+    videoList: [],
+    buyerShowLoading: true,
+    videoLoading: true,
+    globalSearchKeyword: "",
+    videoSource: null
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   * 这个函数会在页面第一次打开时自动执行
-   */
-  onLoad: function (options) {
-    // 调用我们自己写的函数，去服务器获取品牌数据
+  onLoad: function () {
     this.getBrands();
+    if (app.globalData.videoSource !== undefined && app.globalData.videoSource !== null) {
+      this.setData({ videoSource: app.globalData.videoSource });
+    } else {
+      app.videoSourceReadyCallback = (source) => {
+        this.setData({ videoSource: source });
+        if (this.data.activeTab === 'video') {
+          this.getVideosForHome();
+        }
+      };
+    }
   },
 
-  /**
-   * 自定义函数：获取品牌列表
-   * 负责与我们的后端API通信
-   */
-  getBrands: function () {
-    const that = this; // 保存this上下文，在回调函数中使用，这是小程序开发的一个常用技巧
+  onShow: function() {
+    if (this.data.videoSource !== app.globalData.videoSource && app.globalData.videoSource !== null) {
+      this.setData({ videoSource: app.globalData.videoSource });
+      if (this.data.activeTab === 'video') {
+        this.getVideosForHome();
+      }
+    }
+  },
 
-    // 调用微信的网络请求API
+  onTabChange: function(event) {
+    const newTab = event.currentTarget.dataset.tab;
+    if (this.data.activeTab === newTab) return;
+    this.setData({ activeTab: newTab });
+
+    if (newTab === 'buyerShow' && this.data.buyerShowList.length === 0) {
+      this.getBuyerShowList();
+    } else if (newTab === 'video' && this.data.videoList.length === 0) {
+      this.getVideosForHome();
+    }
+  },
+
+  getVideosForHome: function () {
+    if (this.data.videoSource === null) {
+      return;
+    }
+    this.setData({ videoLoading: true });
+    const videoSource = this.data.videoSource;
+    let apiUrl = '';
+    if (videoSource === 'wechat') {
+      apiUrl = 'https://xiaochengxu.uiijii.cn/get_wechat_videos.php';
+    } else {
+      apiUrl = 'https://xiaochengxu.uiijii.cn/get_video_seasons.php';
+    }
+
     wx.request({
-      // 填写我们之前开发好的API地址
-      url: 'https://xiaochengxu.uiijii.cn/api.php?action=getBrands',
-      
-      // 请求成功时的回调函数
-      success: function (res) {
-        console.log('成功从API获取到品牌数据:', res.data);
-
-        // 检查服务器返回的状态码和数据格式是否正确
+      url: apiUrl,
+      success: (res) => {
         if (res.statusCode === 200 && Array.isArray(res.data)) {
-          // 使用 setData 方法将获取到的数据更新到页面的 data 中
-          // 这样WXML页面就会自动刷新，显示出列表
-          that.setData({
-            brandList: res.data
+          const formattedList = res.data.map(item => {
+            item.id = item.feedId || item.name;
+            return item;
           });
+          this.setData({ videoList: formattedList });
         }
       },
-      
-      // 请求失败时的回调函数
-      fail: function (err) {
-        console.error('API请求失败:', err);
-        // 给用户一个友好的错误提示
-        wx.showToast({
-          title: '加载失败',
-          icon: 'error'
-        });
+      complete: () => {
+        this.setData({ videoLoading: false });
       }
     });
   },
 
-  /**
-   * 自定义函数：处理品牌卡片的点击事件
-   * WXML里的 bindtap="goToGroupList" 会调用这个函数
-   * @param {Object} event 事件对象，包含了点击事件的所有信息
-   */
-  goToGroupList: function (event) {
-    // 从被点击的元素上，获取我们通过 data-brandid 附带的品牌ID
-    const brandId = event.currentTarget.dataset.brandid;
-    
-    console.log('用户点击了品牌，ID为: ' + brandId);
+  handleVideoCardTap: function (event) {
+    const item = event.currentTarget.dataset.item;
+    const videoSource = this.data.videoSource;
+    if (videoSource === 'wechat') {
+      if (!item.feedId) {
+        wx.showToast({ title: '视频ID无效', icon: 'none' });
+        return;
+      }
+      wx.openChannelsActivity({
+        finderUserName: "sphd3MzWP8YGynB",
+        feedId: item.feedId
+      });
+    } else {
+      if (!item.hasContent) {
+        wx.showToast({ title: '暂无视频', icon: 'none' });
+        return;
+      }
+      wx.navigateTo({ url: `/pages/video/detail?season=${encodeURIComponent(item.name)}` });
+    }
+  },
 
-    // 调用微信的页面跳转API
-    wx.navigateTo({
-      // 定义要跳转到的页面路径，并通过URL参数把品牌ID传过去
-      // 这就像在浏览器里访问 a.html?id=1 一样
-      url: '/pages/list/list?brand_id=' + brandId
+  getBrands: function () {
+    wx.request({
+      url: 'https://xiaochengxu.uiijii.cn/api.php?action=getBrands',
+      success: (res) => {
+        if (res.statusCode === 200 && Array.isArray(res.data)) {
+          this.setData({ brandList: res.data });
+        }
+      }
     });
+  },
+
+  goToGroupList: function (event) {
+    const brand = event.currentTarget.dataset.item;
+    if (!brand || brand.group_count <= 0) {
+      wx.showToast({ title: '暂无内容', icon: 'none' });
+      return;
+    }
+    wx.navigateTo({ url: `/pages/list/list?brand_id=${brand.id}` });
+  },
+
+  onGlobalSearchInput: function(e) {
+    this.setData({ globalSearchKeyword: e.detail.value });
+  },
+
+  onGlobalSearchConfirm: function() {
+    const keyword = this.data.globalSearchKeyword.trim();
+    if (!keyword) {
+      wx.showToast({ title: '请输入关键字', icon: 'none' });
+      return;
+    }
+    wx.navigateTo({ url: `/pages/search/search?keyword=${encodeURIComponent(keyword)}` });
+  },
+
+  getBuyerShowList: function() {
+    this.setData({ buyerShowLoading: true });
+    wx.request({
+      url: 'https://xiaochengxu.uiijii.cn/get_shows.php',
+      success: (res) => {
+        if (res.statusCode === 200 && Array.isArray(res.data)) {
+          this.setData({ buyerShowList: res.data });
+        }
+      },
+      complete: () => {
+        this.setData({ buyerShowLoading: false });
+      }
+    });
+  },
+
+  goToSubList: function(event) {
+    const item = event.currentTarget.dataset.item;
+    if (!item.hasContent) {
+      wx.showToast({ title: '暂无内容', icon: 'none' });
+      return;
+    }
+    wx.navigateTo({ url: `/pages/show/sublist/sublist?season=${item.path}` });
+  },
+
+  onShareAppMessage: function () {
+    return {
+      title: 'UIIJII&ENNO图册',
+      path: '/pages/index/index',
+      imageUrl: '/assets/icons/share_cover.png'
+    };
+  },
+
+  onShareTimeline: function () {
+    return {
+      title: 'UIIJII&ENNO 新款图册，快来看看吧！',
+      query: ''
+    };
+  },
+
+  goToPersonalCenter: function() {
+    wx.navigateTo({
+      url: '/pages/home/home'
+    });
+  },
+
+  handleChannelsTap: function(event) {
+    const account = event.currentTarget.dataset.account;
+    const accounts = {
+      uiijii: 'sphd3MzWP8YGynB',
+      enno: 'sphCaP3mZxjHlOt'
+    };
+    const finderUserName = accounts[account];
+    if (!finderUserName) {
+      wx.showToast({ title: 'ID配置错误', icon: 'none' });
+      return;
+    }
+    wx.openChannelsUserProfile({
+      finderUserName,
+      fail: (err) => {
+        wx.showToast({ title: '打开失败', icon: 'none' });
+      }
+    });
+  },
+
+  // =========== 下拉刷新功能 ===========
+  onPullDownRefresh: function() {
+      // 清空搜索框内容
+    this.setData({ globalSearchKeyword: '' });
+    this.getBrands();
+    if (this.data.activeTab === 'buyerShow') {
+      this.getBuyerShowList();
+    } else if (this.data.activeTab === 'video') {
+      this.getVideosForHome();
+    }
+    wx.stopPullDownRefresh();
   }
-})
+});

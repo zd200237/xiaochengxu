@@ -1,0 +1,14 @@
+<!-- pages/account-balance/balance.wxml (最终UI版) -->
+<view class="container">
+      <!-- 直接循环卡片 -->
+      <view class="card" wx:for="{{ balanceList }}" wx:key="account_name">
+        <text class="account-name">{{ item.account_name }}</text>
+        <view class="balance-value {{ parseFloat(item.balance) < 0 ? 'negative' : '' }}">
+          <text class="currency">¥</text>
+          <text>{{ item.balance }}</text>
+        </view>
+      </view>
+      
+      <view wx:if="{{ isLoading }}" class="loading-tip">正在加载...</view>
+      <view wx:if="{{ balanceList.length === 0 && !isLoading }}" class="empty-tip">暂无账户信息</view>
+    </view>

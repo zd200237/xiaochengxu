@@ -1,0 +1,18 @@
+<!-- pages/video/list.wxml (卡片样式版) -->
+<view class="page-container">
+  <view class="season-grid">
+    <view 
+      wx:for="{{seasons}}" 
+      wx:key="name" 
+      class="season-card"
+      bindtap="goToDetail" 
+      data-item="{{item}}"
+    >
+      <view class="status-dot {{item.hasContent ? 'active' : ''}}"></view>
+      <view class="card-content">
+        <text class="season-name">{{item.name}}</text>
+        <text class="video-count">视频数: {{item.video_count}}</text>
+      </view>
+    </view>
+  </view>
+</view>

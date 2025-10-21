@@ -1,0 +1,32 @@
+// pages/reconciliation-list/list.wxs
+var formatYearMonth = function(str) {
+  if (!str) return '';
+  // 注意：WXS 中不支持 new Date()，需要用 getDate()
+  var date = getDate(str + '-01');
+  var year = date.getFullYear();
+  var month = date.getMonth() + 1;
+  return year + '年' + month + '月';
+}
+
+var formatDay = function(str) {
+  if (!str) return '';
+  var date = getDate(str);
+  var day = date.getDate();
+  // WXS 中没有 padStart，需要手动补零
+  var month = (date.getMonth() + 1);
+  var monthStr = month < 10 ? '0' + month : month;
+  var dayStr = day < 10 ? '0' + day : day;
+  return monthStr + '.' + dayStr;
+}
+// 新增：取绝对值函数
+var abs = function(num) {
+  // WXS 中没有 Math.abs，需要自己实现
+  var n = parseFloat(num);
+  return n < 0 ? -n : n;
+}
+
+module.exports = {
+  formatYearMonth: formatYearMonth,
+  formatDay: formatDay,
+  abs: abs // 导出新函数
+}

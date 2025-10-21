@@ -1,0 +1,92 @@
+/* pages/order-list/list.wxss (精修版) */
+page {
+  background-color: #f7f8fa;
+}
+
+/* --- 核心修改 1: 移除 container 的内边距 --- */
+.container {
+  padding: 0;
+}
+
+.order-card {
+  /* --- 核心修改 2: 增加左右外边距，并改回圆角 --- */
+  margin: 8rpx; /* 上下左右都留出边距 */
+  border-radius: 16rpx; /* 恢复圆角 */
+  
+  background-color: #fff;
+  padding: 30rpx;
+  box-shadow: 0 8rpx 16rpx rgba(0, 0, 0, 0.06);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 24rpx;
+  border-bottom: 1px solid #f2f2f2;
+}
+.order-source {
+  font-size: 30rpx;
+  color: #333;
+  font-weight: 500;
+  word-break: break-all; 
+}
+
+/* --- 核心修改 3: 放大销售季节标签 --- */
+.sale-season-badge {
+  background-color: #ecf5ff;
+  color: #409eff;
+  padding: 8rpx 20rpx; /* 增加内边距 */
+  font-size: 26rpx;   /* 放大字体 */
+  font-weight: bold;
+  border-radius: 8rpx;
+  flex-shrink: 0; 
+  margin-left: 20rpx;
+}
+
+.card-footer {
+  padding-top: 24rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.footer-item {
+  display: flex;
+  flex-direction: column;
+}
+.footer-item.align-left {
+  align-items: flex-start;
+}
+.footer-item.align-center {
+  align-items: center;
+}
+.footer-item.align-right {
+  align-items: flex-end;
+}
+.item-label {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 8rpx;
+}
+.item-value {
+  font-size: 32rpx;
+  color: #333;
+  font-weight: bold;
+}
+.item-value.amount {
+  color: #fa5151;
+}
+.item-value.date {
+  font-size: 28rpx;
+  color: #666;
+  font-weight: normal;
+}
+
+.loading-tip {
+  text-align: center;
+  padding: 30rpx;
+  color: #aaa;
+  font-size: 24rpx;
+}

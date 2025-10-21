@@ -1,0 +1,108 @@
+/* 文件路径: /pages/search/search.wxss */
+
+.page-container {
+  padding: 16rpx;
+  background-color: #f4f4f4;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.header-info {
+  font-size: 26rpx;
+  color: #888;
+  text-align: center;
+  padding: 16rpx 0;
+}
+
+.status-tip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 150rpx 0;
+  color: #aaa;
+  font-size: 28rpx;
+}
+.status-tip .sub-tip {
+  font-size: 24rpx;
+  margin-top: 8rpx;
+}
+
+.waterfall-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.column {
+  width: 49%;
+  display: flex;
+  flex-direction: column;
+}
+
+.group-item {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,.05);
+  margin-bottom: 20rpx;
+}
+
+.cover-image {
+  width: 100%;
+  display: block;
+}
+
+
+/* --- 以下是本次调整的核心区域 --- */
+
+/* 卡片下方的信息区域 */
+.info-area {
+  padding: 2rpx; /* 调整1：增大整体内边距，让文字不贴边 */
+}
+
+/* 每个单品信息的容器 */
+.product-info {
+  margin-bottom: 2rpx; /* 调整2：增大单品之间的下边距 */
+  padding-bottom: 2rpx; /* 调整2：增大单品分隔线以下的间距 */
+  border-bottom: 1px solid #f2f2f2;
+}
+.product-info:last-child {
+  margin-bottom: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* 款号和价格所在行 */
+.product-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: -8rpx; /* 调整3：增大与下方产品名称的距离 */
+}
+
+/* 款号 */
+.style-id {
+  font-size: 24rpx;
+  color: #333;
+  font-weight: 700;
+  word-break: break-all;
+}
+
+/* 价格 */
+.price {
+  font-size: 27rpx; /* 调整4：稍微增大价格字体，更醒目 */
+  color: #e64340;
+  font-weight: bold;
+  margin-left: 10rpx;
+  white-space: nowrap;
+}
+
+/* 产品名称 */
+.product-name {
+  font-size: 24rpx; /* 调整5：增大产品名字体 */
+  color: #666;    /* 调整5：颜色变深一点，更清晰 */
+  line-height: 1.4; /* 增加行高，防止文字换行时挤在一起 */
+}
+/* --- 调整结束 --- */

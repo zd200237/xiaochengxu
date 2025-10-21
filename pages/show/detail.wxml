@@ -1,0 +1,23 @@
+<!-- pages/show/detail/detail.wxml (更新后) -->
+<view class="page-container">
+  <view wx:if="{{loading}}" class="loading-tip">正在加载图片...</view>
+  <block wx:else>
+    <view wx:if="{{leftColumnList.length > 0 || rightColumnList.length > 0}}" class="waterfall-container">
+      <!-- 左列 -->
+      <view class="column">
+        <image class="waterfall-image" wx:for="{{leftColumnList}}" wx:key="*this" src="{{item}}" mode="widthFix" bindtap="previewImage" data-url="{{item}}"/>
+      </view>
+      <!-- 右列 -->
+      <view class="column">
+        <image class="waterfall-image" wx:for="{{rightColumnList}}" wx:key="*this" src="{{item}}" mode="widthFix" bindtap="previewImage" data-url="{{item}}"/>
+      </view>
+    </view>
+    <view wx:else class="empty-tip">该系列下暂无图片</view>
+  </block>
+
+  <!-- === 新增：右下角悬浮下载按钮 === -->
+  <view wx:if="{{imageList.length > 0}}" class="download-fab" bindtap="onDownloadAllImages">
+    <image class="fab-icon" src="/assets/icons/download.png"/>
+  </view>
+
+</view>

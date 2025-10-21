@@ -1,0 +1,28 @@
+<!-- pages/sku-detail/detail.wxml (最终通栏版) -->
+<view class="container">
+  
+  <!-- 头部信息，现在是一个独立的通栏块 -->
+  <view class="header">
+    <text class="kuanhao">{{ kuanhao }}</text>
+    <text class="product-name">{{ productName }}</text>
+  </view>
+
+  <!-- 列表部分，也是一个独立的通栏块 -->
+  <view class="list-container">
+    <view class="list-header">
+      <text class="col-color">颜色</text>
+      <text class="col-size">尺码</text>
+      <text class="col-qty">数量</text>
+      <text class="col-amount">金额</text>
+    </view>
+    <view class="list-body">
+      <view wx:for="{{ skuList }}" wx:key="index" class="list-row">
+        <text class="col-color">{{ item.color_code }}</text>
+        <text class="col-size">{{ item.size_name }}</text>
+        <text class="col-qty">{{ item.sum_num }}</text>
+        <text class="col-amount">￥{{ item.dis_amount }}</text>
+      </view>
+    </view>
+  </view>
+
+</view>

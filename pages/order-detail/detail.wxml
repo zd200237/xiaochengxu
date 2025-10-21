@@ -1,0 +1,59 @@
+<!-- pages/order-detail/detail.wxml (带三级页面跳转功能) -->
+<view class="container">
+  <!-- 订单主信息 -->
+  <view class="summary-card" wx:if="{{ order.source }}">
+    <view class="info-row">
+      <text class="label">订单号:</text>
+      <text class="value">{{ order.source }}</text>
+    </view>
+    <view class="info-row">
+      <text class="label">经销商:</text>
+      <text class="value">{{ order.stockinfo_name }}</text>
+    </view>
+    <view class="info-row">
+      <text class="label">单据日期:</text>
+      <text class="value">{{ order.billdate }}</text>
+    </view>
+    <view class="info-row">
+      <text class="label">总数量:</text>
+      <text class="value bold">{{ order.total_quantity }}</text>
+    </view>
+    <view class="info-row">
+      <text class="label">总金额:</text>
+      <text class="value bold amount">￥{{ order.total_amount }}</text>
+    </view>
+  </view>
+
+  <!-- 订单明细列表 -->
+  <view class="detail-title" wx:if="{{ order.grouped_details.length > 0 }}">商品明细</view>
+  
+  <!-- 外层循环：遍历每个款号卡片 -->
+  <view 
+    wx:for="{{ order.grouped_details }}" 
+    wx:key="kuanhao" 
+    wx:for-item="kuanhaoItem" 
+    class="kuanhao-card clickable"
+    bind:tap="goToSkuDetail"
+    data-kuanhao="{{ kuanhaoItem.kuanhao }}"
+  >
+    <!-- 款号卡片的头部 -->
+    <view class="kuanhao-header">
+      <view class="kuanhao-info">
+        <text class="kuanhao-text">{{ kuanhaoItem.kuanhao }}</text>
+        <text class="product-name-text">{{ kuanhaoItem.product_name }}</text>
+      </view>
+      <view class="kuanhao-total">
+        <text>{{ kuanhaoItem.total_quantity }} 件</text>
+      </view>
+    </view>
+    
+    <!-- 内层循环：遍历该款号下的每个合并后的颜色 -->
+    <view class="colors-list">
+      <view wx:for="{{ kuanhaoItem.colors }}" wx:key="color" wx:for-item="colorItem" class="color-row">
+        <text class="color-name">{{ colorItem.color }}</text>
+        <text class="color-qty">{{ colorItem.quantity }} 件</text>
+        <text class="color-amount">￥{{ colorItem.amount }}</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,39 @@
+<view class="login-bg">
+  <view class="login-header">
+    <text class="login-title">欢迎您</text>
+  </view>
+  <view class="main-login-btns">
+    <!-- 一键登录主按钮 -->
+    <button
+      class="wechat-btn"
+      type="primary"
+      open-type="getPhoneNumber"
+      bind:getphonenumber="onGetPhoneNumber"
+      loading="{{loading}}"
+      disabled="{{loading}}"
+    >
+      手机号快捷登录
+    </button>
+    <text class="login-tip">请使用预留手机号快速登录</text>
+  </view>
+  <!-- 右下角悬浮账号密码入口，无图片仅用代码符号 -->
+  <view class="account-login-fab" bind:tap="showAccountLogin">
+    <view class="fab-icon"></view>
+    <text class="fab-label">账号登录</text>
+  </view>
+  <!-- 账号密码弹窗 -->
+  <view class="account-login-modal" wx:if="{{showAccount}}">
+    <view class="modal-mask" bind:tap="closeAccountLogin"></view>
+    <view class="modal-content">
+      <view class="form-group">
+        <input class="input-field" placeholder="请输入账号" value="{{username}}" bind:input="onUsernameInput" maxlength="20" />
+      </view>
+      <view class="form-group">
+        <input class="input-field" placeholder="请输入密码" type="password" value="{{password}}" bind:input="onPasswordInput" maxlength="20" />
+      </view>
+      <button class="login-btn" bind:tap="accountLogin" loading="{{loading}}" disabled="{{loading || !username || !password}}">登录</button>
+      <button class="modal-close-btn" bind:tap="closeAccountLogin">关闭</button>
+      <view class="error-msg" wx:if="{{errorMsg}}">{{errorMsg}}</view>
+    </view>
+  </view>
+</view>

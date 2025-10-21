@@ -1,0 +1,43 @@
+<!-- pages/video/videodetail/videodetail.wxml (恢复到最简全屏版) -->
+<view class="page-container">
+  <block wx:if="{{videoInfo}}">
+
+    <!-- 模式一：详情展示 (isPlaying 为 false 时显示) -->
+    <view class="detail-mode" wx:if="{{!isPlaying}}">
+      <view class="cover-wrapper" bindtap="handlePlay">
+        <image class="cover-image" src="{{videoInfo.cover}}" mode="widthFix" />
+        <image class="play-icon" src="/assets/icons/play.png" />
+      </view>
+      <view class="info-wrapper">
+        <view class="video-title">{{videoInfo.title}}</view>
+      </view>
+    </view>
+
+    <!-- 模式二：全屏置顶播放 (isPlaying 为 true 时显示) -->
+    <view class="player-mode" wx:else>
+      <video
+        id="videoPlayer"
+        class="fullscreen-video"
+        src="{{videoInfo.self_hosted_data.self_hosted_url}}"
+        poster="{{videoInfo.cover}}"
+        autoplay
+        loop
+        object-fit="contain"
+        show-fullscreen-btn="{{false}}"
+        enable-progress-gesture
+        show-center-play-btn
+        controls
+        bindended="onVideoEnded"
+        binderror="onVideoError"
+      ></video>
+      <view class="download-fab" bindtap="onDownloadVideo" data-url="{{videoInfo.self_hosted_data.self_hosted_url}}">
+        <image class="fab-icon" src="/assets/icons/download.png"/>
+      </view>
+    </view>
+
+  </block>
+
+  <view wx:else class="loading-tip">
+    加载中...
+  </view>
+</view>

@@ -1,9 +1,87 @@
-<view class="container">
-  <view class="brand-grid-container">
-    <view class="brand-item" wx:for="{{brandList}}" wx:key="id" bindtap="goToGroupList" data-brandid="{{item.id}}">
-      <view class="brand-content">
-        <text class="brand-name">{{item.name}}</text>
-      </view>
+<!-- pages/index/index.html (完整版，底部“到底了”吸底) -->
+<view class="page-container">
+  <!-- 顶部彩色导航栏 -->
+  <view class="colorful-nav-bar">
+    <view class="nav-card nav-card-outfit" bindtap="onTabChange" data-tab="outfit">
+      <text class="nav-text">搭配图</text>
     </view>
+    <view class="nav-card nav-card-buyershow" bindtap="onTabChange" data-tab="buyerShow">
+      <text class="nav-text">买家秀</text>
+    </view>
+    <view class="nav-card nav-card-video" bindtap="onTabChange" data-tab="video">
+      <text class="nav-text">视频</text>
+    </view>
+    <view class="nav-slider active-{{activeTab}}"></view>
+  </view>
+
+  <!-- 内容区域 -->
+  <view class="content-area">
+    <!-- 搭配图tab -->
+    <block wx:if="{{activeTab === 'outfit'}}">
+      <view class="global-search-bar">
+        <input class="search-input" placeholder="输入款号或名称搜索" value="{{globalSearchKeyword}}" bindinput="onGlobalSearchInput" bindconfirm="onGlobalSearchConfirm" confirm-type="search"/>
+        <button class="search-button" bindtap="onGlobalSearchConfirm">搜索</button>
+      </view>
+      <view class="brand-grid">
+        <view wx:for="{{brandList}}" wx:key="id" class="brand-card glass-card" bindtap="goToGroupList" data-item="{{item}}">
+          <view class="status-dot {{item.group_count > 0 ? 'active' : ''}}"></view>
+          <view class="card-content">
+            <text class="brand-name">{{item.name}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 买家秀tab -->
+    <block wx:elif="{{activeTab === 'buyerShow'}}">
+      <view wx:if="{{buyerShowLoading}}" class="loading-tip">加载中...</view>
+      <view wx:else class="buyershow-grid">
+        <view wx:for="{{buyerShowList}}" wx:key="path" class="buyershow-card glass-card" bindtap="goToSubList" data-item="{{item}}">
+          <view class="status-dot {{item.hasContent ? 'active' : ''}}"></view>
+          <view class="card-content">
+            <text class="buyershow-name">{{item.name}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 视频tab -->
+    <block wx:elif="{{activeTab === 'video'}}">
+      <view class="channels-grid">
+        <!-- 第一个视频号卡片 -->
+        <view class="glass-card" bindtap="handleChannelsTap" data-account="uiijii">
+          <view class="card-content">
+            <text class="video-season-name">UIIJII视频号</text>
+          </view>
+          <image class="channels-logo" src="/assets/icons/channels.png" mode="aspectFit"></image>
+        </view>
+        <!-- 第二个视频号卡片 -->
+        <view class="glass-card" bindtap="handleChannelsTap" data-account="enno">
+          <view class="card-content">
+            <text class="video-season-name">ENNO视频号</text>
+          </view>
+          <image class="channels-logo" src="/assets/icons/channels.png" mode="aspectFit"></image>
+        </view>
+      </view>
+      <view wx:if="{{videoLoading}}" class="loading-tip">加载中...</view>
+      <view wx:else class="video-grid">
+        <block wx:for="{{videoList}}" wx:key="id">
+          <view class="video-season-card glass-card" bindtap="handleVideoCardTap" data-item="{{item}}">
+            <view class="status-dot {{item.hasContent ? 'active' : ''}}"></view>
+            <view class="card-content">
+              <text class="video-season-name">{{item.title || item.name}}</text>
+            </view>
+          </view>
+        </block>
+      </view>
+    </block>
+  </view>
+
+  <!-- 底部“到底了”始终吸底 -->
+  <view class="footer-tip-abs"><text>--- 到底了 ---</text></view>
+
+  <!-- 个人中心悬浮入口 -->
+  <view class="personal-center-fab" bindtap="goToPersonalCenter">
+    <image class="fab-icon" src="/assets/icons/user.png" mode="aspectFit"></image>
   </view>
 </view>

@@ -1,0 +1,23 @@
+<!-- pages/show/sublist.wxml (更新后) -->
+<view class="page-container">
+  <view wx:if="{{loading}}" class="loading-tip">加载中...</view>
+  <block wx:else>
+    <view wx:if="{{seriesList.length > 0}}" class="waterfall-container">
+      <!-- 左边列 -->
+      <view class="column">
+        <view class="series-card" wx:for="{{leftColumnList}}" wx:key="path" bindtap="goToDetail" data-path="{{item.path}}">
+          <image class="cover-image" src="{{item.cover_image}}" mode="widthFix" />
+          <view class="name">{{item.name}}</view>
+        </view>
+      </view>
+      <!-- 右边列 -->
+      <view class="column">
+        <view class="series-card" wx:for="{{rightColumnList}}" wx:key="path" bindtap="goToDetail" data-path="{{item.path}}">
+          <image class="cover-image" src="{{item.cover_image}}" mode="widthFix" />
+          <view class="name">{{item.name}}</view>
+        </view>
+      </view>
+    </view>
+    <view wx:else class="empty-tip">该系列下暂无内容</view>
+  </block>
+</view>

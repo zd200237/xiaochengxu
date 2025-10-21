@@ -1,0 +1,70 @@
+/* pages/video/videodetail/videodetail.wxss (恢复到最简全屏版) */
+
+.page-container {
+  min-height: 100vh;
+  background-color: #ffffff;
+}
+.loading-tip {
+  text-align: center;
+  color: #999;
+  padding-top: 300rpx;
+}
+
+/* --- 模式一：详情展示样式 --- */
+.detail-mode .cover-wrapper {
+  position: relative;
+  width: 100%;
+}
+.detail-mode .cover-image {
+  width: 100%;
+  display: block;
+}
+.detail-mode .play-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120rpx;
+  height: 120rpx;
+  opacity: 0.85;
+}
+.detail-mode .info-wrapper {
+  padding: 32rpx;
+}
+.detail-mode .video-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+/* --- 模式二：全屏置顶播放样式 --- */
+.player-mode {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  z-index: 100;
+}
+.player-mode .fullscreen-video {
+  width: 100%;
+  height: 100%;
+}
+.player-mode .download-fab {
+  position: absolute;
+  right: 40rpx;
+  bottom: 120rpx;
+  width: 100rpx;
+  height: 100rpx;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 101;
+}
+.player-mode .fab-icon {
+  width: 50rpx;
+  height: 50rpx;
+}

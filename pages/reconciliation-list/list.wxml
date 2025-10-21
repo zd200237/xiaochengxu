@@ -1,0 +1,84 @@
+<wxs src="./list.wxs" module="tools" />
+
+<view class="container">
+  <!-- 月份选择器加左右切换按钮 -->
+  <view class="month-nav-bar">
+    <button class="month-nav-btn" size="mini" bindtap="onPrevMonth">上一月</button>
+    <picker mode="date" fields="month" value="{{ selectedMonth }}" bindchange="onMonthChange">
+      <view class="month-selector">
+        <text class="selector-text">{{ tools.formatYearMonth(selectedMonth) }}</text>
+        <image class="arrow-down" src="/assets/icons/arrow-down.png"></image>
+      </view>
+    </picker>
+    <button class="month-nav-btn" size="mini" bindtap="onNextMonth">下一月</button>
+  </view>
+
+  <!-- 汇总卡片 -->
+  <view class="summary-card" wx:if="{{ statement.month }}">
+    <view class="summary-grid">
+      <view class="summary-item">
+        <text class="label">期初余额</text>
+        <text class="value">￥{{ statement.opening_balance }}</text>
+      </view>
+      <view class="summary-item">
+        <text class="label">期末余额</text>
+        <text class="value bold">￥{{ statement.closing_balance }}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 明细列表 -->
+  <view class="timeline-wrapper" wx:if="{{ statement.details.length > 0 }}">
+    <!-- 表头 -->
+    <view class="list-header">
+      <text class="col-date">本页</text>
+      <text class="col-info">仅显示</text>
+      <text class="col-amount">“货款”账户</text>
+      <text class="col-balance">余额变动情况</text>
+    </view>
+    <!-- 时间轴列表 -->
+    <view class="timeline-list">
+      <view wx:for="{{ statement.details }}" wx:key="index" class="timeline-item">
+        <!-- 左侧：日期和时间轴线 -->
+        <view class="item-left">
+          <text class="date-text">{{ tools.formatDay(item.ck_time) }}</text>
+          <view class="line-node">
+            <view class="line"></view>
+            <view class="node type-{{item.type}}"></view>
+          </view>
+        </view>
+        <!-- 右侧：详情卡片 -->
+        <view class="item-right">
+          <!-- 第一行：单据号 和 金额，100%一行 -->
+          <view class="info-line">
+            <text class="source-no" style="font-size:26rpx;max-width:60%;flex-shrink:1;overflow:hidden;text-overflow:ellipsis;margin-right:8rpx;">
+              {{ item.source }}
+            </text>
+            <text class="amount {{ item.dis_amount >= 0 ? 'type-2' : 'type-1' }}" style="font-size:28rpx;font-weight:bold;white-space:nowrap;flex-shrink:0;">
+              发生金额：{{ item.dis_amount >= 0 ? '+' : '' }}{{ item.dis_amount }}
+            </text>
+          </view>
+          <!-- 第二行：单据类型和源单号 -->
+          <view class="sub-info-line">
+            <text class="type-badge type-{{item.type}}">{{ item.type == 2 ? '收款单' : '应收单' }}</text>
+            <text class="out-in-source" wx:if="{{ item.out_in_source }}">(源: {{ item.out_in_source }})</text>
+          </view>
+          <!-- 第三行：摘要 -->
+          <view class="desc-line">
+            <text class="desc">{{ item.description || '无摘要' }}</text>
+          </view>
+          <!-- 第四行：余额 -->
+          <view class="info-line balance-line">
+            <text>
+              余额：{{ item.running_balance }}
+            </text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{ isLoading }}" class="loading-tip">正在加载...</view>
+  <view wx:if="{{ !isLoading && !statement.details }}" class="empty-tip">本月无对账明细</view>
+  <view wx:if="{{ !isLoading && statement.details.length === 0 }}" class="empty-tip">本月无对账明细</view>
+</view>

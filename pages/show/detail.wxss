@@ -1,0 +1,48 @@
+/* pages/show/detail/detail.wxss (更新后) */
+.page-container {
+  padding: 16rpx;
+  background-color: #f4f4f4;
+  /* 为悬浮按钮留出底部空间，防止遮挡最后一张图片 */
+  padding-bottom: 180rpx;
+}
+.loading-tip, .empty-tip {
+  text-align: center;
+  color: #999;
+  padding-top: 200rpx;
+}
+.waterfall-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.column {
+  width: 49%;
+  display: flex;
+  flex-direction: column;
+}
+.waterfall-image {
+  width: 100%;
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+/* --- === 新增：悬浮按钮样式 === --- */
+.download-fab {
+  position: fixed; /* 固定定位 */
+  right: 40rpx;
+  bottom: 80rpx;
+  width: 100rpx;
+  height: 100rpx;
+  background-color: #07c160; /* 绿色背景 */
+  border-radius: 50%; /* 圆形 */
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.2);
+  /* 使用flex布局让内部图标居中 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+}
+.fab-icon {
+  width: 70rpx;
+  height: 70rpx;
+}

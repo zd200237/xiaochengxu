@@ -1,0 +1,48 @@
+/* pages/show/sublist.wxss (更新后) */
+.page-container {
+  padding: 16rpx;
+  background-color: #f7f8fa;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.loading-tip, .empty-tip {
+  text-align: center;
+  color: #999;
+  padding-top: 200rpx;
+}
+
+/* --- 瀑布流布局 --- */
+.waterfall-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.column {
+  width: calc(50% - 8rpx); /* 两列，中间留16rpx间隙 */
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- 卡片样式 --- */
+.series-card {
+  width: 100%;
+  border-radius: 16rpx;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 16rpx; /* 卡片垂直间距 */
+  box-shadow: 0 4rpx T2rpx rgba(0,0,0,0.08);
+  background-color: #fff;
+}
+
+.cover-image {
+  width: 100%;
+  display: block; /* 消除图片底部默认间隙 */
+}
+.name {
+  font-size: 28rpx;
+  color: #333;
+  margin-top: 10rpx;
+  text-align: center;
+}

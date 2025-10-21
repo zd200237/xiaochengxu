@@ -1,0 +1,33 @@
+<!-- pages/video/player/player.wxml (优化只渲染当前+前后) -->
+<view class="page-container">
+  <swiper
+    class="video-swiper"
+    vertical="true"
+    circular="false"
+    current="{{ currentIndex - baseIndex }}"
+    bindchange="onSwiperChange"
+  >
+    <block wx:for="{{ renderList }}" wx:key="video_url">
+      <swiper-item>
+        <view class="swiper-item-wrapper">
+          <video
+            id="video-{{index}}"
+            class="fullscreen-video"
+            src="{{item.video_url}}"
+            poster="{{item.thumbnail_url}}"
+            autoplay="{{ currentIndex - baseIndex === index }}"
+            loop
+            object-fit="contain"
+            show-fullscreen-btn="{{false}}"
+            enable-progress-gesture
+            show-center-play-btn
+            controls
+          ></video>
+          <view class="download-fab" bindtap="onDownloadVideo" data-url="{{item.video_url}}">
+            <image class="fab-icon" src="/assets/icons/download.png"/>
+          </view>
+        </view>
+      </swiper-item>
+    </block>
+  </swiper>
+</view>

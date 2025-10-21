@@ -1,0 +1,71 @@
+/* pages/account-balance/balance.wxss (最终居中版) */
+page {
+  background-color: #f7f8fa;
+}
+
+/* --- 核心修改 1: 容器改为 flex 布局 --- */
+.container {
+  padding: 24rpx;
+  display: flex;
+  flex-direction: column; /* 垂直排列 */
+  align-items: center;    /* 水平居中 */
+}
+
+/* --- 核心修改 2: 卡片样式 --- */
+.card {
+  background-color: #fff;
+  border-radius: 44rpx;
+  padding: 24rpx 40rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 8rpx 16rpx rgba(0, 0, 0, 0.05);
+  
+  /* 设置一个固定的宽度，或者一个最小宽度 */
+  width: 85%; /* 例如，占据父容器85%的宽度 */
+  min-width: 500rpx; /* 或者设置一个最小宽度 */
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box; /* 确保 padding 不会撑大宽度 */
+}
+.card:last-child {
+  margin-bottom: 0;
+}
+
+.account-name {
+  font-size: 30rpx;
+  color: #333;
+  font-weight: 500;
+  /* 防止名称过长换行 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 20rpx; /* 与金额保持距离 */
+}
+
+.balance-value {
+  display: flex;
+  align-items: baseline;
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #fa5151;
+  /* 防止金额被压缩 */
+  flex-shrink: 0;
+}
+
+.balance-value.negative {
+  color: #333;
+}
+
+.currency {
+  font-size: 28rpx;
+  font-weight: normal;
+  margin-right: 4rpx;
+}
+
+.loading-tip, .empty-tip {
+  /* 移除 grid-column */
+  text-align: center;
+  padding-top: 100rpx;
+  color: #999;
+}
