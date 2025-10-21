@@ -10,20 +10,20 @@
   color: #999;
   padding-top: 200rpx;
 }
-.waterfall-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-.column {
-  width: 49%;
+.image-list {
   display: flex;
   flex-direction: column;
+  gap: 24rpx;
 }
-.waterfall-image {
+.image-card {
+  background-color: #ffffff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+}
+.detail-image {
   width: 100%;
-  border-radius: 16rpx;
-  margin-bottom: 16rpx;
+  display: block;
 }
 
 /* --- === 新增：悬浮按钮样式 === --- */

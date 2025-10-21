@@ -2,8 +2,6 @@
 Page({
   data: {
     imageList: [],
-    leftColumnList: [],
-    rightColumnList: [],
     loading: true
   },
 
@@ -23,28 +21,11 @@ Page({
       success: (res) => {
         if (res.statusCode === 200 && Array.isArray(res.data)) {
           this.setData({ imageList: res.data });
-          this.distributeToColumns(res.data);
         }
       },
       complete: () => {
         this.setData({ loading: false });
       }
-    });
-  },
-
-  distributeToColumns: function(dataList) {
-    const leftColumn = [];
-    const rightColumn = [];
-    dataList.forEach((item, index) => {
-      if (index % 2 === 0) {
-        leftColumn.push(item);
-      } else {
-        rightColumn.push(item);
-      }
-    });
-    this.setData({
-      leftColumnList: leftColumn,
-      rightColumnList: rightColumn,
     });
   },
 
