@@ -1,0 +1,32 @@
+<view class="page-container">
+  <!-- 顶部门店名称 -->
+  <view class="store-header">
+    <text class="store-name">{{storeName}}</text>
+  </view>
+
+  <!-- 表头 -->
+  <view class="table-header">
+    <text class="header-left">销售季节</text>
+    <text class="header-right">退货率</text>
+  </view>
+
+  <!-- 加载中 -->
+  <block wx:if="{{loading}}">
+    <view class="loading">加载中...</view>
+  </block>
+
+  <!-- 数据列表 -->
+  <block wx:else>
+    <block wx:for="{{list}}" wx:key="index">
+      <view class="item-card">
+        <text class="left">{{item.sale_season}}</text>
+        <text class="right">{{item.firretrate_text}}</text>
+      </view>
+    </block>
+
+    <!-- 空状态 -->
+    <block wx:if="{{list.length === 0}}">
+      <view class="empty">暂无数据</view>
+    </block>
+  </block>
+</view>

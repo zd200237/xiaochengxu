@@ -23,7 +23,8 @@
     "pages/refund-detail/detail",
     "pages/refund-list/list",
     "pages/refund-sku-detail/detail",
-    "pages/sku-detail/detail"
+    "pages/sku-detail/detail",
+    "pages/seasonRate/index"
   ],
   "networkTimeout": {
     "request": 10000,

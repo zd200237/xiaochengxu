@@ -25,6 +25,10 @@
       <view class="home-menu-card" bind:tap="goToPage" data-url="/pages/reconciliation-list/list">
         <image class="menu-icon" src="/assets/icons/statement.png" mode="aspectFit"></image>
         <text class="menu-title">月度对账单</text>
+        </view>
+      <view class="home-menu-card" bindtap="goToPage" data-url="/pages/seasonRate/index">
+        <image src="/assets/icons/season.png" class="menu-icon"></image>
+        <text class="menu-title">季节退货率</text>
       </view>
     </view>
   </view>
