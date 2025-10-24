@@ -6,7 +6,7 @@
       <text class="nav-text">搭配图</text>
     </view>
     <view class="nav-card nav-card-buyershow" bindtap="onTabChange" data-tab="buyerShow">
-      <text class="nav-text">买家秀</text>
+      <text class="nav-text">「种草」</text>
     </view>
     <view class="nav-card nav-card-video" bindtap="onTabChange" data-tab="video">
       <text class="nav-text">视频</text>
@@ -39,6 +39,13 @@
         <view wx:for="{{buyerShowList}}" wx:key="path" class="buyershow-card glass-card" bindtap="goToSubList" data-item="{{item}}">
           <view class="status-dot {{item.hasContent ? 'active' : ''}}"></view>
           <view class="card-content">
+            <!-- 仅对固定“朋友圈素材”卡片显示图标；如果未加 fixed，也会匹配名称 -->
+            <image
+              wx:if="{{item.fixed || item.name === '朋友圈素材'}}"
+              src="/assets/icons/moments.png"
+              mode="widthFix"
+              class="moments-icon"
+            />
             <text class="buyershow-name">{{item.name}}</text>
           </view>
         </view>

@@ -24,7 +24,8 @@
     "pages/refund-list/list",
     "pages/refund-sku-detail/detail",
     "pages/sku-detail/detail",
-    "pages/seasonRate/index"
+    "pages/seasonRate/index",
+    "pages/socialFeed/list"
   ],
   "networkTimeout": {
     "request": 10000,

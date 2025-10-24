@@ -1,0 +1,119 @@
+.feed-page {
+  padding: 20rpx 20rpx 40rpx;
+  background: #f6f6f6;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* 单条动态 */
+.post {
+  display: flex;
+  align-items: flex-start;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #eee;
+}
+
+/* 头像 */
+.avatar {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 8rpx;
+  margin-right: 20rpx;
+  background: #ddd;
+  object-fit: cover;
+}
+
+/* 右侧主体 */
+.body { flex: 1; }
+
+/* 昵称 */
+.name {
+  font-size: 28rpx;
+  color: #3b5998;
+  font-weight: 600;
+}
+
+/* 文案 */
+.text {
+  margin-top: 10rpx;
+  line-height: 1.7;
+  color: #333;
+  font-size: 28rpx;
+}
+.content.clamped {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.content.expanded { white-space: pre-wrap; }
+
+.toggle {
+  color: #576b95;
+  margin-left: 12rpx;
+  font-size: 28rpx;
+}
+
+/* 媒体九宫格 */
+.media-grid {
+  margin-top: 16rpx;
+  display: grid;
+  grid-gap: 8rpx;
+}
+.media-grid.cols-1 { grid-template-columns: 1fr; }
+.media-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+.media-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+/* 正方形占位在容器上，图片绝对铺满 */
+.media-cell {
+  width: 100%;
+  position: relative;
+  padding-bottom: 100%;
+  background: #efefef;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+.media-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 视频播放角标 */
+.play-badge{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 操作按钮 */
+.actions { margin-top: 16rpx; }
+.primary-btn {
+  background: #07c160;
+  border: none;
+  padding: 0 20rpx;
+  line-height: 60rpx;
+  height: 60rpx;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+}
+
+/* 空态 */
+.empty {
+  text-align: center;
+  color: #999;
+  padding: 80rpx 0;
+  font-size: 28rpx;
+}

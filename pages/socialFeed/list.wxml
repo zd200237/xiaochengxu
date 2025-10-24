@@ -1,0 +1,65 @@
+<view class="feed-page">
+
+<!-- 时间线列表 -->
+<block wx:for="{{posts}}" wx:key="id">
+  <view class="post">
+    <!-- 左侧头像 -->
+    <image class="avatar" src="/assets/icons/pengyouquan.png" mode="aspectFill" />
+
+    <!-- 右侧内容 -->
+    <view class="body">
+      <!-- 昵称 -->
+      <text class="name">{{item.author.name}}</text>
+
+      <!-- 文案（可选“全文/收起”） -->
+      <view class="text">
+        <text
+          class="content {{item.expanded ? 'expanded' : 'clamped'}}"
+          selectable="true"
+        >{{item.text}}</text>
+
+        <text
+          wx:if="{{item.needToggle}}"
+          class="toggle"
+          data-index="{{index}}"
+          bindtap="toggleExpand"
+        >{{item.expanded ? '收起' : '全文'}}</text>
+      </view>
+
+      <!-- 媒体九宫格（只渲染图片和封面；视频仅显示封面） -->
+      <view class="media-grid {{item.gridClass}}">
+        <block wx:for="{{item.displayMedia}}" wx:key="url" wx:for-item="media" wx:for-index="midx">
+          <view
+            class="media-cell"
+            data-pindex="{{index}}"
+            data-index="{{midx}}"
+            data-kind="{{media.kind}}"
+            data-video="{{item.videoUrl}}"
+            bindtap="handleMediaTap"
+          >
+            <image class="media-img" src="{{media.url}}" mode="aspectFill" lazy-load="true"></image>
+            <!-- 视频封面加播放角标 -->
+            <view wx:if="{{item.isVideo}}" class="play-badge">▶</view>
+          </view>
+        </block>
+      </view>
+
+      <!-- 操作：一键保存并复制 -->
+      <view class="actions">
+        <button
+          class="primary-btn"
+          type="primary"
+          size="mini"
+          data-index="{{index}}"
+          bindtap="handleSaveAll"
+        >一键保存图片并复制文案</button>
+      </view>
+    </view>
+  </view>
+</block>
+
+<!-- 空态 -->
+<view wx:if="{{!posts.length}}" class="empty">
+  <text>暂无素材</text>
+</view>
+</view>

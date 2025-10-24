@@ -131,13 +131,24 @@ Page({
     wx.navigateTo({ url: `/pages/search/search?keyword=${encodeURIComponent(keyword)}` });
   },
 
+  // ========= 关键改动：买家秀第一张固定为「朋友圈素材」 =========
   getBuyerShowList: function() {
     this.setData({ buyerShowLoading: true });
     wx.request({
       url: 'https://xiaochengxu.uiijii.cn/get_shows.php',
       success: (res) => {
         if (res.statusCode === 200 && Array.isArray(res.data)) {
-          this.setData({ buyerShowList: res.data });
+          let list = res.data || [];
+          // 固定插入朋友圈素材卡片到最前
+          const momentsCard = {
+            name: '一键发圈',
+            path: '/pages/socialFeed/list',
+            icon: '/assets/icons/moments.png', // 请确保此文件存在
+            fixed: true,
+            hasContent: true
+          };
+          list.unshift(momentsCard);
+          this.setData({ buyerShowList: list });
         }
       },
       complete: () => {
@@ -146,9 +157,15 @@ Page({
     });
   },
 
+  // 买家秀卡片点击
   goToSubList: function(event) {
     const item = event.currentTarget.dataset.item;
-    if (!item.hasContent) {
+    // 朋友圈素材：固定跳转到素材列表
+    if (item && item.fixed) {
+      wx.navigateTo({ url: item.path });
+      return;
+    }
+    if (!item || !item.hasContent) {
       wx.showToast({ title: '暂无内容', icon: 'none' });
       return;
     }
@@ -189,15 +206,14 @@ Page({
     }
     wx.openChannelsUserProfile({
       finderUserName,
-      fail: (err) => {
+      fail: () => {
         wx.showToast({ title: '打开失败', icon: 'none' });
       }
     });
   },
 
-  // =========== 下拉刷新功能 ===========
+  // 下拉刷新
   onPullDownRefresh: function() {
-      // 清空搜索框内容
     this.setData({ globalSearchKeyword: '' });
     this.getBrands();
     if (this.data.activeTab === 'buyerShow') {

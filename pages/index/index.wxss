@@ -218,3 +218,11 @@
   padding-bottom: 90rpx;  /* 防止被悬浮按钮遮住，可调整 */
   z-index: 999;
 }
+/* 仅用于“朋友圈素材”图标的小样式，不影响其他结构 */
+.moments-icon {
+  width: 44rpx;
+  height: 44rpx;
+  margin-right: 18rpx;
+  display: inline-block;
+  vertical-align: middle;
+}
