@@ -13,7 +13,7 @@ Page({
 
   // 拉取数据（走后端接口）
   fetchFeed(done) {
-    const url = 'https://xiaochengxu.uiijii.cn/api/social_feed_list.php?page=1&page_size=10';
+    const url = 'https://xiaochengxu.uiijii.cn/api/social_feed_list.php?page=1&page_size=50';
     wx.request({
       url,
       header: { 'content-type': 'application/json' },
