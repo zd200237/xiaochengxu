@@ -15,6 +15,13 @@ Page({
   async checkLogin() {
     const isLoggedIn = await app.checkLoginStatus();
     if (isLoggedIn) {
+      const permissions = app.globalData.permissions || wx.getStorageSync('permissions') || {};
+      const canViewMy = permissions.can_view_my !== false;
+      if (!canViewMy) {
+        wx.showToast({ title: '无权限', icon: 'none' });
+        wx.redirectTo({ url: '/pages/index/index' });
+        return;
+      }
       this.setData({
         agentInfo: app.globalData.agentInfo,
         canShow: true
@@ -31,6 +38,14 @@ Page({
     if (url) {
       wx.navigateTo({ url });
     }
+  },
+
+  handleTabChange(e) {
+    const tab = e.currentTarget.dataset.tab;
+    if (!tab || tab === 'my') {
+      return;
+    }
+    wx.redirectTo({ url: `/pages/index/index?tab=${tab}` });
   },
 
   // 退出登录

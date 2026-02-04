@@ -1,6 +1,6 @@
 <view class="login-bg">
   <view class="login-header">
-    <text class="login-title">欢迎您</text>
+    <text class="login-title">ENNO&UIIJII</text>
   </view>
   <view class="main-login-btns">
     <!-- 一键登录主按钮 -->
@@ -34,6 +34,19 @@
       <button class="login-btn" bind:tap="accountLogin" loading="{{loading}}" disabled="{{loading || !username || !password}}">登录</button>
       <button class="modal-close-btn" bind:tap="closeAccountLogin">关闭</button>
       <view class="error-msg" wx:if="{{errorMsg}}">{{errorMsg}}</view>
+    </view>
+  </view>
+
+  <!-- 员工申请弹窗 -->
+  <view class="account-login-modal" wx:if="{{showApply}}">
+    <view class="modal-mask" bind:tap="closeApplyModal"></view>
+    <view class="modal-content">
+      <view class="form-group">
+        <input class="input-field" placeholder="请输入客户编号" value="{{stockinfoId}}" bind:input="onStockinfoInput" maxlength="32" />
+      </view>
+      <button class="login-btn" bind:tap="submitApply" loading="{{applyLoading}}" disabled="{{applyLoading || !stockinfoId}}">提交申请</button>
+      <button class="modal-close-btn" bind:tap="closeApplyModal">关闭</button>
+      <view class="error-msg" wx:if="{{applyError}}">{{applyError}}</view>
     </view>
   </view>
 </view>

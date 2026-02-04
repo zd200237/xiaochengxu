@@ -32,4 +32,26 @@
       </view>
     </view>
   </view>
+
+  <!-- 底部功能栏 -->
+  <view class="bottom-tabbar">
+    <view class="bottom-tabbar-inner">
+      <view class="tab-item" bindtap="handleTabChange" data-tab="outfit">
+        <image class="tab-icon" src="/assets/icons/picture.png" mode="aspectFit"></image>
+        <text class="tab-text">搭配图</text>
+      </view>
+      <view class="tab-item" bindtap="handleTabChange" data-tab="buyerShow">
+        <image class="tab-icon" src="/assets/icons/grass.png" mode="aspectFit"></image>
+        <text class="tab-text">种草</text>
+      </view>
+      <view class="tab-item" bindtap="handleTabChange" data-tab="video">
+        <image class="tab-icon" src="/assets/icons/video.png" mode="aspectFit"></image>
+        <text class="tab-text">视频</text>
+      </view>
+      <view class="tab-item active">
+        <image class="tab-icon" src="/assets/icons/my.png" mode="aspectFit"></image>
+        <text class="tab-text">我的</text>
+      </view>
+    </view>
+  </view>
 </view>

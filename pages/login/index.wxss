@@ -16,7 +16,11 @@
 }
 .main-login-btns {
   width: 80vw;
-  margin: 0 auto;
+  position: absolute;
+  left: 50%;
+  top: 66%;
+  transform: translate(-50%, -50%);
+  margin: 0;
   text-align: center;
 }
 .wechat-btn {

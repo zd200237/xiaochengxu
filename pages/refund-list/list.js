@@ -28,7 +28,7 @@ Page({
 
     if (!token || !agentInfo || !agentInfo.stockinfo_id) {
       wx.showToast({ title: '请先登录', icon: 'none' });
-      wx.redirectTo({ url: '/pages/index/login' });
+      wx.redirectTo({ url: '/pages/login/index' });
       return;
     }
 

@@ -45,7 +45,7 @@ Page({
         showCancel: false,
         confirmText: '去登录',
         success: () => {
-          wx.redirectTo({ url: '/pages/index/login' });
+          wx.redirectTo({ url: '/pages/login/index' });
         }
       });
       return;

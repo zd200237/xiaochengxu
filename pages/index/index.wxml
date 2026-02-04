@@ -1,19 +1,5 @@
 <!-- pages/index/index.html (完整版，底部“到底了”吸底) -->
 <view class="page-container">
-  <!-- 顶部彩色导航栏 -->
-  <view class="colorful-nav-bar">
-    <view class="nav-card nav-card-outfit" bindtap="onTabChange" data-tab="outfit">
-      <text class="nav-text">搭配图</text>
-    </view>
-    <view class="nav-card nav-card-buyershow" bindtap="onTabChange" data-tab="buyerShow">
-      <text class="nav-text">「种草」</text>
-    </view>
-    <view class="nav-card nav-card-video" bindtap="onTabChange" data-tab="video">
-      <text class="nav-text">视频</text>
-    </view>
-    <view class="nav-slider active-{{activeTab}}"></view>
-  </view>
-
   <!-- 内容区域 -->
   <view class="content-area">
     <!-- 搭配图tab -->
@@ -84,11 +70,25 @@
     </block>
   </view>
 
-  <!-- 底部“到底了”始终吸底 -->
-  <view class="footer-tip-abs"><text>--- 到底了 ---</text></view>
-
-  <!-- 个人中心悬浮入口 -->
-  <view class="personal-center-fab" bindtap="goToPersonalCenter">
-    <image class="fab-icon" src="/assets/icons/user.png" mode="aspectFit"></image>
+  <!-- 底部功能栏 -->
+  <view class="bottom-tabbar">
+    <view class="bottom-tabbar-inner">
+      <view class="tab-item {{activeTab === 'outfit' ? 'active' : ''}}" bindtap="onTabChange" data-tab="outfit">
+        <image class="tab-icon" src="/assets/icons/picture.png" mode="aspectFit"></image>
+        <text class="tab-text">搭配图</text>
+      </view>
+      <view class="tab-item {{activeTab === 'buyerShow' ? 'active' : ''}}" bindtap="onTabChange" data-tab="buyerShow">
+        <image class="tab-icon" src="/assets/icons/grass.png" mode="aspectFit"></image>
+        <text class="tab-text">种草</text>
+      </view>
+      <view class="tab-item {{activeTab === 'video' ? 'active' : ''}}" bindtap="onTabChange" data-tab="video">
+        <image class="tab-icon" src="/assets/icons/video.png" mode="aspectFit"></image>
+        <text class="tab-text">视频</text>
+      </view>
+      <view class="tab-item" bindtap="onTabChange" data-tab="my" wx:if="{{canViewMy}}">
+        <image class="tab-icon" src="/assets/icons/my.png" mode="aspectFit"></image>
+        <text class="tab-text">我的</text>
+      </view>
+    </view>
   </view>
 </view>

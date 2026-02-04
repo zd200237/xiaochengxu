@@ -63,7 +63,7 @@ Page({
     this.setData({ isLoading: true, statement: {} });
     const token = wx.getStorageSync('token');
     if (!token || !this.data.agentInfo) {
-      wx.redirectTo({ url: '/pages/index/login' });
+      wx.redirectTo({ url: '/pages/login/index' });
       return;
     }
     wx.request({

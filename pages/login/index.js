@@ -5,10 +5,19 @@ Page({
     password: '',
     loading: false,
     errorMsg: '',
-    showAccount: false
+    showAccount: false,
+    redirectUrl: '',
+    showApply: false,
+    stockinfoId: '',
+    applyInfo: null,
+    applyLoading: false,
+    applyError: ''
   },
 
-  onLoad() {
+  onLoad(options) {
+    if (options && options.redirect) {
+      this.setData({ redirectUrl: decodeURIComponent(options.redirect) });
+    }
     this.silentLogin();
   },
 
@@ -67,6 +76,12 @@ Page({
         this.setData({ loading: false });
         if (response.data.code === 0) {
           this.loginSuccess(response.data);
+        } else if (response.data.code === 1001) {
+          this.openApplyModal(response.data.apply_info);
+        } else if (response.data.code === 1002) {
+          wx.showToast({ title: response.data.message || '审核中，请等待管理员审批', icon: 'none', duration: 2000 });
+        } else if (response.data.code === 1003) {
+          wx.showToast({ title: response.data.message || '无权限，请联系管理员', icon: 'none', duration: 2000 });
         } else {
           // 关键行，显示后端 message（比如手机号不存在等）
           wx.showToast({
@@ -93,6 +108,86 @@ Page({
   },
   closeAccountLogin() {
     this.setData({ showAccount: false, errorMsg: '', username: '', password: '' });
+  },
+
+  openApplyModal(applyInfo) {
+    this.setData({
+      showApply: true,
+      stockinfoId: '',
+      applyInfo: applyInfo || null,
+      applyError: ''
+    });
+  },
+
+  closeApplyModal() {
+    this.setData({
+      showApply: false,
+      stockinfoId: '',
+      applyInfo: null,
+      applyError: '',
+      applyLoading: false
+    });
+  },
+
+  onStockinfoInput(e) {
+    this.setData({ stockinfoId: e.detail.value, applyError: '' });
+  },
+
+  submitApply() {
+    const stockinfoId = (this.data.stockinfoId || '').trim();
+    const applyInfo = this.data.applyInfo || {};
+    if (!stockinfoId) {
+      this.setData({ applyError: '请填写客户编号' });
+      return;
+    }
+    if (!applyInfo.openid || !applyInfo.phone) {
+      this.setData({ applyError: '申请信息不完整，请重新登录' });
+      return;
+    }
+
+    this.setData({ applyLoading: true, applyError: '' });
+    wx.getUserProfile({
+      desc: '用于完善员工资料',
+      success: (profileRes) => {
+        const nickname = (profileRes.userInfo && profileRes.userInfo.nickName) ? profileRes.userInfo.nickName : '';
+        this.doApply(stockinfoId, applyInfo, nickname);
+      },
+      fail: () => {
+        this.doApply(stockinfoId, applyInfo, '');
+      }
+    });
+  },
+
+  doApply(stockinfoId, applyInfo, nickname) {
+    wx.request({
+      url: 'https://bojun.uiijii.cn/api/user_add.php',
+      method: 'POST',
+      data: {
+        openid: applyInfo.openid,
+        phone: applyInfo.phone,
+        stockinfo_id: stockinfoId,
+        nickname: nickname
+      },
+      success: (res) => {
+        const payload = res.data || {};
+        if (payload.code === 0) {
+          wx.showToast({ title: payload.message || '申请已提交', icon: 'none', duration: 2000 });
+          this.closeApplyModal();
+        } else if (payload.code === 1002) {
+          wx.showToast({ title: payload.message || '审核中，请等待管理员审批', icon: 'none', duration: 2000 });
+        } else if (payload.code === 1003) {
+          wx.showToast({ title: payload.message || '无权限，请联系管理员', icon: 'none', duration: 2000 });
+        } else {
+          wx.showToast({ title: payload.message || '提交失败，请重试', icon: 'none', duration: 2000 });
+        }
+      },
+      fail: () => {
+        wx.showToast({ title: '网络请求失败，请重试', icon: 'none', duration: 2000 });
+      },
+      complete: () => {
+        this.setData({ applyLoading: false });
+      }
+    });
   },
 
   onUsernameInput(e) {
@@ -150,18 +245,29 @@ Page({
     });
   },
 
-  // 登录成功统一跳转 home
+  // 登录成功统一跳转
   loginSuccess(data) {
     const app = getApp();
+    const permissions = data.permissions || { can_view_my: true };
     wx.setStorageSync('token', data.token);
     wx.setStorageSync('agent_info', data.agent_info);
+    wx.setStorageSync('permissions', permissions);
     app.globalData.token = data.token;
     app.globalData.agentInfo = data.agent_info;
+    app.globalData.permissions = permissions;
     app.globalData.isLoggedIn = true;
 
     wx.showToast({ title: '登录成功', icon: 'success', duration: 1500 });
     setTimeout(() => {
-      wx.redirectTo({ url: '/pages/home/home' });
+      const redirectUrl = this.data.redirectUrl;
+      const canViewMy = permissions.can_view_my !== false;
+      let targetUrl = redirectUrl;
+      if (!targetUrl || targetUrl === '/pages/login/index') {
+        targetUrl = canViewMy ? '/pages/home/home' : '/pages/index/index';
+      } else if (!canViewMy && targetUrl.startsWith('/pages/home/home')) {
+        targetUrl = '/pages/index/index';
+      }
+      wx.reLaunch({ url: targetUrl });
     }, 1500);
   }
 });

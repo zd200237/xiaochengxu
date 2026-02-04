@@ -9,10 +9,16 @@ Page({
     buyerShowLoading: true,
     videoLoading: true,
     globalSearchKeyword: "",
-    videoSource: null
+    videoSource: null,
+    canViewMy: true
   },
 
-  onLoad: function () {
+  onLoad: function (options) {
+    this.syncPermissions();
+    const tab = options && options.tab ? options.tab : '';
+    if (tab === 'video' || tab === 'buyerShow' || tab === 'outfit') {
+      this.setData({ activeTab: tab });
+    }
     this.getBrands();
     if (app.globalData.videoSource !== undefined && app.globalData.videoSource !== null) {
       this.setData({ videoSource: app.globalData.videoSource });
@@ -24,9 +30,15 @@ Page({
         }
       };
     }
+    if (this.data.activeTab === 'video') {
+      this.getVideosForHome();
+    } else if (this.data.activeTab === 'buyerShow') {
+      this.getBuyerShowList();
+    }
   },
 
   onShow: function() {
+    this.syncPermissions();
     if (this.data.videoSource !== app.globalData.videoSource && app.globalData.videoSource !== null) {
       this.setData({ videoSource: app.globalData.videoSource });
       if (this.data.activeTab === 'video') {
@@ -37,6 +49,14 @@ Page({
 
   onTabChange: function(event) {
     const newTab = event.currentTarget.dataset.tab;
+    if (newTab === 'my') {
+      if (!this.data.canViewMy) {
+        wx.showToast({ title: '无权限', icon: 'none' });
+        return;
+      }
+      this.goToPersonalCenter();
+      return;
+    }
     if (this.data.activeTab === newTab) return;
     this.setData({ activeTab: newTab });
 
@@ -191,6 +211,14 @@ Page({
     wx.navigateTo({
       url: '/pages/home/home'
     });
+  },
+
+  syncPermissions() {
+    const permissions = app.globalData.permissions || wx.getStorageSync('permissions') || {};
+    const canViewMy = permissions.can_view_my !== false;
+    if (this.data.canViewMy !== canViewMy) {
+      this.setData({ canViewMy });
+    }
   },
 
   handleChannelsTap: function(event) {

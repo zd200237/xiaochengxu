@@ -3,57 +3,11 @@
   min-height: 100vh;
   box-sizing: border-box;
   padding: 28rpx;
+  padding-bottom: calc(242rpx + env(safe-area-inset-bottom)); /* 预留底部空间，避免内容被底部栏遮住 */
   background: linear-gradient(to bottom, #f3fbfe 0%, #ffffff 100%);
   display: flex;
   flex-direction: column;
 }
-
-/* 彩色顶部导航栏（原样保留） */
-.colorful-nav-bar {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-bottom: 44rpx;
-  position: relative;
-}
-
-.nav-card {
-  width: 30%;
-  height: 92rpx;
-  border-radius: 34rpx;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  box-shadow: 0 12rpx 36rpx rgba(50, 100, 180, 0.18);
-  font-weight: 600;
-  position: relative;
-  transition: transform 0.18s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.2s;
-  letter-spacing: 2rpx;
-}
-.nav-card:active {
-  transform: scale(0.94);
-  box-shadow: 0 4rpx 12rpx rgba(50, 100, 180, 0.16);
-}
-.nav-text {
-  font-size: 32rpx;
-}
-.nav-card-outfit { background: linear-gradient(45deg, #2CD8D5 0%, #6B8DD6 100%);}
-.nav-card-buyershow { background: linear-gradient(45deg, #A984E3 0%, #6B8DD6 100%);}
-.nav-card-video { background: linear-gradient(45deg, #F97794 0%, #623AA2 100%);}
-.nav-slider {
-  position: absolute;
-  bottom: 12rpx;
-  width: 56rpx;
-  height: 8rpx;
-  background: linear-gradient(90deg, #7fd8f8, #f6d365 80%);
-  border-radius: 4rpx;
-  transition: left 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  box-shadow: 0 0 14rpx 2rpx #f6d3653c;
-}
-.nav-slider.active-outfit { left: 16.66%; transform: translateX(-50%);}
-.nav-slider.active-buyershow { left: 50%; transform: translateX(-50%);}
-.nav-slider.active-video { left: 83.33%; transform: translateX(-50%);}
 
 /* 内容区域自动撑开 */
 .content-area {
@@ -179,45 +133,70 @@
   opacity: 1;
 }
 
-/* --- 个人中心悬浮按钮 --- */
-.personal-center-fab {
+/* --- 底部功能栏 --- */
+.bottom-tabbar {
   position: fixed;
-  right: 40rpx;
-  bottom: 90rpx;
-  width: 100rpx;
-  height: 100rpx;
-  border-radius: 50%;
-  background: linear-gradient(45deg, #6B8DD6 0%, #89f7fe 100%);
-  box-shadow: 0 12rpx 36rpx rgba(80, 130, 240, 0.22);
+  left: 0;
+  right: 0;
+  bottom: calc(15rpx + env(safe-area-inset-bottom));
   display: flex;
   justify-content: center;
-  align-items: center;
   z-index: 1000;
-  border: 1.5rpx solid rgba(255, 255, 255, 0.5);
-  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  padding: 0 24rpx;
 }
-.personal-center-fab:active {
-  transform: scale(0.95) rotate(10deg);
-  box-shadow: 0 6rpx 20rpx rgba(80, 130, 240, 0.25);
+.bottom-tabbar-inner {
+  width: 100%;
+  max-width: 660rpx;
+  height: 110rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14rpx 34rpx rgba(40, 80, 130, 0.18);
+  backdrop-filter: blur(16rpx);
+  border: 1rpx solid rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11rpx;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
 }
-.fab-icon {
-  width: 64rpx;
-  height: 64rpx;
+.tab-item {
+  flex: 1;
+  height: 100%;
+  border-radius: 999rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #6b7893;
+  font-size: 22rpx;
+  transition: transform 0.18s, background 0.18s, color 0.18s;
+  margin: 0 2rpx;
+  box-sizing: border-box;
+}
+.tab-item:active {
+  transform: scale(0.96);
+}
+.tab-item.active {
+  color: #0b571d;
+  background: linear-gradient(135deg, rgba(76, 176, 255, 0.18) 0%, rgba(140, 210, 255, 0.28) 100%);
+}
+.tab-item.active .tab-text {
+  color: #0b571d;
+}
+.tab-icon {
+  width: 44rpx;
+  height: 44rpx;
+  margin-bottom: 5rpx;
+}
+.tab-text {
+  font-size: 24rpx;
+  letter-spacing: 1rpx;
+  font-weight: 600;
+  color: #2f3a55;
 }
 
-/* 底部“到底了”始终吸底 */
-.footer-tip-abs {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  text-align: center;
-  color: #cfd2df;
-  font-size: 24rpx;
-  background: transparent;
-  padding-bottom: 90rpx;  /* 防止被悬浮按钮遮住，可调整 */
-  z-index: 999;
-}
 /* 仅用于“朋友圈素材”图标的小样式，不影响其他结构 */
 .moments-icon {
   width: 44rpx;

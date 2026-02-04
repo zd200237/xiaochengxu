@@ -16,7 +16,7 @@ Page({
     const agentInfo = wx.getStorageSync('agent_info');
 
     if (!token || !agentInfo || !agentInfo.stockinfo_id) {
-      wx.redirectTo({ url: '/pages/index/login' });
+      wx.redirectTo({ url: '/pages/login/index' });
       return;
     }
 
